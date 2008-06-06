@@ -1,0 +1,20 @@
+Changelog for Spaceman Spiff's C64 USB Keyboard (c64key)
+
+
+1.98ß - 09-12-2007
+------------------
+
+- Two hardware versions: ATmega8 and ATmega16-based.
+- Fixed to work with newer GCC versions.
+- Boot protocol compatible.
+- Support for caps, num and scroll lock LEDs. (only one on ATmega8).
+
+
+0.96ß - 26-08-2006
+------------------
+
+- Initial public release of source code and circuit schematics.
+- Only ATmega8 version.
+- Not boot-compatible - used specific report format.
+
+$Id: $

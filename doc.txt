@@ -1,0 +1,207 @@
+Spaceman Spiff's Commodire 64 USB Keyboard (c64key for short) is
+is free software; you can redistribute it and/or modify it under 
+the terms of the OBDEV license, as found in the licence.txt file.
+                                                              
+c64key is distributed in the hope that it will be useful,    
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+OBDEV license for further details.
+
+
+Spaceman Spiff's C64 USB keyboard
+=================================
+
+This document contains various bits of information that may come in handy if
+one wants to study the function of the developed Commodore 64 USB keyboard.
+
+Spaceman Spiff's Commodore 64 USB keyboard (or c64key for short) is an 
+implementation of a low-speed USB HID device, implementing a keyboard.
+The physical appearance of the device is that of a Commodore 64 "breadbox",
+but the device works as a USB keyboard that can be used with a PC.
+
+The C64 keyboard consists of 66 keys, where the restore-key is special in
+that it was hardwired to the NMI-pin of the 6510 in the C64. The remaining
+keys are organized in a matrix with 8 rows and 8 columns, and with the SHIFT
+LOCK key wired in parallel to the left SHIFT-key.
+
+
+Keyboard matrix decoding
+------------------------
+
+The keyboard matrix is decoded by scanning the rows. One by one, the row pins
+on the microcontroller are configured as outputs, and with a low value (0V).
+The other row drivers are configured as inputs.
+
+The column inputs are also configured as inputs, and with the internal pull-
+up resistors enabled. Each column is read in turn and compared to the last 
+values (which are stored in a buffer). When a change is detected, a debounce 
+counter is activated, which will require a number of consecutive reads to all
+return the same value before a report is generated. This is required since 
+the keys in the C64 keyboard matrix have a rather high amount of bounce, which
+will sometimes result in more than one key-event for some key presses.
+
+The scanning rate with the current configuration is about 2.2kHz, which is fast
+enough that the delay caused by the debouncing is not noticable.
+
+The keyboard matrix hardware of the C64 is quite simple, and the scanning 
+routine is also simple, so no key blocking has been implemented. This means 
+that ghosting can easily occur (if 3 keys are depressed at the same time,
+a fourth scan-code may be generated, whose key was never pressed).
+
+
+USB Keyboard limitations
+------------------------
+
+The USB HID keyboard specification has some limitations that became aparent
+during the work with this project. Most notably, the limit on a HID report
+is 8 bytes (due to the low-speed devices). Since the first byte is reserved 
+for modifier keys, and on a normal keyboard, the second byte is reserved, we 
+are left with a maximum of 6 bytes for the keycodes. In our case we do not 
+need LED states, and so this byte is saved for another keycode. In other words 
+it is not possible to create a USB HID keyboard that handles pressing more 
+than 7 keys simultaneously (6 under normal circumstances) - apart from the up 
+to 8 modifier keys. Clearly the keyboard is primarily meant as an input-device
+for typing text, and not as a game controller. While the AT and PS/2 keyboard
+protocol does not have this limitation, since it sends scancodes for each key
+pressed and released, other limitations apply here, such as the keyboard 
+controller scanning the keys, and the decoding on the PC side. It is therefore
+not clear if PS/2 keyboards are better in this respect, but the USB HID
+specification imposes a limit that does not exist with PS/2, so it is at least
+theoretically possible to make a PS/2 keyboard that can handle more simulteneous
+keypresses.
+
+Since the scanning of the keyboard in our implementation (the c64key) is very
+simple, and does not cope with ghosting, we do not regard this as a big 
+disadvantage for our application, but it should be considered if a different
+type of controller may be more appropriate for a given application.
+
+That said, it is anticipated that the c64key can prove useful in many cases
+where a more advanced input device is needed (compared to the HIDkeys demo
+application on which this is based). Changes to the method of scanning should
+be easily achievable.
+
+
+Special key handling
+--------------------
+
+In order to get the most accurate emulation of the C64 keyboard when used with
+a PC, some special key handling has been implemented. The idea is to achieve
+the correct symbol (e.g. the one on the keytop) to appear on the screen, even
+though the mapping to PC scan-codes in unshifted and shifted states is not
+straight forward. 
+
+Unfortunately the USB keyboard does not send the character code, but rather a
+scan-code, similar to older keyboards, and the PC maps these to characters
+(or functions) based on the current keyboard map.
+
+In order to implement this, the keyboard map array has some special entries
+(starting with SPC_) which are handled by a special lookup table. The table
+contains the scan-code to generate, as well as some bits signifying if the
+modifier keys should be altered. 
+
+Unfortunately this approach means the modifier keys may be messed up if a 
+special key is pressed in combination with another key. In other words the
+system works fine as long as only one key is pressed at a time (perhaps 
+along with a modifyer).
+
+
+Modifier key mapping
+--------------------
+
+Due to the difference in available modifier keys on a Commodore 64 and a
+standard PC keyboard, the following mapping has been defined. The modifier
+keys are decoded along with the other keys, and their mapping may be changed
+in the keymap-array defined in keycodes.h. Notice, however, that some special
+decoding of the shift-keys is done in main.c, in order to handle the special
+keys that need to generate different scan-codes based on the state of the
+modifiers, or change the modifier mask.
+
+Modifier key mappings:
+LSHIFT              Left shift
+SHIFT LOCK          Left shift
+CTRL                Left CTRL
+C=                  Left ALT
+RUN/STOP            Right ALT
+RSHIFT              Right shift
+RESTORE             Right CTRL
+
+For the cursor keys and the F-keys, the right shift-key will select alternate
+function, while the left shift-key is passed through. This allows selection by
+holding the left shift key and using the cursor-keys (and the right-shift to
+alter the direction of movement). It also allows the even F-keys to be selected
+(by using RSHIFT + F-key), while the left shift key is passed through. So pressing
+RSHIFT+F7 yields F8, and LSHIFT+RSHIFT+F7 yields SHIFT+F8. C= + RSHIFT + F3 is
+Alt-F4.
+
+
+C64 keyboard matrix pinout
+--------------------------
+
+pin   wire color        function
+ 20   brown/white       column 7
+ 19   red/white         column 1
+ 18   orange/white      column 2
+ 17   yellow/white      column 3
+ 16   green/white       column 4
+ 15   blue/white        column 5
+ 14   purple/white      column 6
+ 13   gray/white        column 0
+ 12   brown             row 0
+ 11   red               row 1
+ 10   orange            row 2
+  9   yellow            row 7
+  8   green             row 4
+  7   blue              row 5
+  6   purple            row 6
+  5   gray              row 3
+  4                     +5V
+  3   black             restore
+  2                     (key)
+  1   white             GND
+
+NOTE: The GND-connection is only used for the RESTORE-key. The remaining 65 keys
+are mapped into the 8x8 matrix (with the SHIFT LOCK key connected in parallel with
+the left SHIFT key).
+
+
+C64 keyboard matrix
+-------------------
+
+The table below contains the mapping of the C64 keyboard matrix. The table has
+been organized based on the row/column numbers used internally in the C64 (and
+also in the c64key project), but does not correspond to the wiring used in the
+C64 keyboard matrix connector.
+
+row/col         0       1       2       3       4       5       6       7
+   0          NS/DEL    3       5       7       9       +       £       1
+   1          RETURN    W       R       Y       I       P       *       <-
+   2         CRSR RL    A       D       G       J       L       ;      CTRL
+   3            F7      4       6       8       0       -    CLR/HOME   2
+   4            F1      Z       C       B       M       .    R shift   SPC
+   5            F3      S       F       H       K       :       =       C=
+   6            F5      E       T       U       O       @       ^       Q
+   7         CRSR DU  L shift   X       V       N       ,       /    RUN/STOP
+
+
+The Danish keyboard mapping
+---------------------------
+
+The Danish keyboard mapping is created to utilize the C64 USB keyboard with 
+Danish keytops for a PC with a Danish keyboard configuration. It should be possible
+to make an updated keycodes.h-file with other key-to-scancode translation, which
+will allow an unmodified C64 keyboard to be used, or allow the generated scan-codes
+to be in a format suitable for other keyboard mappings on the PC side.
+
+The following C64 keys have replaced keytops on the Danish version:
+Normal C64 key        unshifted        shifted
+      0                   0               @
+      -                   -               =
+      £                   :               :
+      @                   å               Å
+      :                   æ               Æ
+      ;                   ø               Ø
+      =                   ;               ;
+      
+
+Copyright (C) 2007 by Mikkel Holm Olsen
+$Id: $

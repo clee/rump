@@ -1,0 +1,661 @@
+Archive member included because of file (symbol)
+
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+                              (vfprintf)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+                              (vfscanf)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_mulsi3.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o) (__mulsi3)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_udivmodsi4.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o) (__udivmodsi4)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o (exit)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+                              ../usbdrv/usbdrv.o (__do_copy_data)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+                              ../usbdrv/usbdrv.o (__do_clear_bss)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o) (isspace)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o) (tolower)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(strlen_P.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o) (strlen_P)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fgetc.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o) (fgetc)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fputc.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o) (fputc)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(ungetc.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o) (ungetc)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(cty_isfalse.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o) (__ctype_isfalse)
+c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o) (isalpha)
+
+Allocating common symbols
+Common symbol       size              file
+
+usbTxBuf            0xb               ../usbdrv/usbdrv.o
+usbTxBuf1           0xb               ../usbdrv/usbdrv.o
+usbDeviceAddr       0x1               ../usbdrv/usbdrv.o
+usbRxToken          0x1               ../usbdrv/usbdrv.o
+usbInputBufOffset   0x1               ../usbdrv/usbdrv.o
+usbMsgPtr           0x2               ../usbdrv/usbdrv.o
+usbRxLen            0x1               ../usbdrv/usbdrv.o
+usbNewDeviceAddr    0x1               ../usbdrv/usbdrv.o
+usbCurrentTok       0x1               ../usbdrv/usbdrv.o
+usbConfiguration    0x1               ../usbdrv/usbdrv.o
+usbRxBuf            0x16              ../usbdrv/usbdrv.o
+
+Discarded input sections
+
+ .stabstr       0x00000000        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+ .stabstr       0x00000000        0x0 ../usbdrv/usbdrvasm.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+LOAD ../usbdrv/usbdrv.o
+LOAD ../usbdrv/oddebug.o
+LOAD main.o
+LOAD ../usbdrv/usbdrvasm.o
+LOAD c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a
+LOAD c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a
+LOAD c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libm.a
+LOAD c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a
+LOAD c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a
+LOAD c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x144c
+ *(.vectors)
+ .vectors       0x00000000       0x54 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+ .progmem.data  0x00000054       0xaa ../usbdrv/usbdrv.o
+                0x000000ca                usbDescriptorDevice
+                0x00000054                usbDescriptorString0
+                0x000000c4                usbDescriptorStringSerialNumber
+                0x000000dc                usbDescriptorConfiguration
+                0x00000058                usbDescriptorStringVendor
+                0x0000009a                usbDescriptorStringDevice
+ .progmem.data  0x000000fe      0x125 main.o
+                0x000001a2                modmask
+                0x00000213                decode_joy
+                0x000001aa                usbDescriptorHidReport
+                0x00000146                spec_keys
+                0x000000fe                keymap
+                0x00000224                . = ALIGN (0x2)
+ *fill*         0x00000223        0x1 00
+                0x00000224                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x00000224        0x0 linker stubs
+ *(.trampolines*)
+                0x00000224                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x00000224                __ctors_start = .
+ *(.ctors)
+                0x00000224                __ctors_end = .
+                0x00000224                __dtors_start = .
+ *(.dtors)
+                0x00000224                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x00000224        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+                0x00000224                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x00000224        0xc c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000230       0x16 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+                0x00000230                __do_copy_data
+ .init4         0x00000246       0x10 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+                0x00000246                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x00000256        0x8 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+ *(.init9)
+ *(.text)
+ .text          0x0000025e        0x4 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+                0x0000025e                __vector_12
+                0x0000025e                __bad_interrupt
+                0x0000025e                __vector_6
+                0x0000025e                __vector_3
+                0x0000025e                __vector_11
+                0x0000025e                __vector_13
+                0x0000025e                __vector_17
+                0x0000025e                __vector_19
+                0x0000025e                __vector_7
+                0x0000025e                __vector_5
+                0x0000025e                __vector_4
+                0x0000025e                __vector_9
+                0x0000025e                __vector_2
+                0x0000025e                __vector_15
+                0x0000025e                __vector_8
+                0x0000025e                __vector_14
+                0x0000025e                __vector_10
+                0x0000025e                __vector_16
+                0x0000025e                __vector_18
+                0x0000025e                __vector_20
+ .text          0x00000262      0x2de ../usbdrv/usbdrv.o
+                0x00000276                usbPoll
+                0x000004fa                usbSetInterrupt
+                0x00000262                usbInit
+ .text          0x00000540        0x0 ../usbdrv/oddebug.o
+ .text          0x00000540      0x2cc main.o
+                0x00000540                usbFunctionSetup
+                0x000005e8                main
+                0x000005c0                usbFunctionWrite
+ .text          0x0000080c      0x300 ../usbdrv/usbdrvasm.o
+                0x0000080c                __vector_1
+                0x00000ad2                usbCrc16
+                0x00000b04                usbCrc16Append
+ .text          0x00000b0c      0x34c c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+                0x00000b0c                vfprintf
+ .text          0x00000e58      0x402 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+                0x00000e58                vfscanf
+ .text          0x0000125a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_mulsi3.o)
+ .text          0x0000125a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_udivmodsi4.o)
+ .text          0x0000125a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+ .text          0x0000125a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+ .text          0x0000125a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+ .text          0x0000125a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o)
+ .text          0x0000125a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o)
+ .text          0x0000125a       0x12 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(strlen_P.o)
+                0x0000125a                strlen_P
+ .text          0x0000126c       0x86 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fgetc.o)
+                0x0000126c                fgetc
+ .text          0x000012f2       0x5a c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fputc.o)
+                0x000012f2                fputc
+ .text          0x0000134c       0x38 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(ungetc.o)
+                0x0000134c                ungetc
+ .text          0x00001384        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(cty_isfalse.o)
+ .text          0x00001384        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+                0x00001384                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00001384       0x3e c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_mulsi3.o)
+                0x00001384                __mulsi3
+ .text.libgcc   0x000013c2       0x44 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_udivmodsi4.o)
+                0x000013c2                __udivmodsi4
+ .text.libgcc   0x00001406        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x00001406        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x00001406        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+ .text.ctype    0x00001406       0x1e c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o)
+                0x00001406                isspace
+ .text.ctype    0x00001424        0xc c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o)
+                0x00001424                tolower
+ .text.ctype    0x00001430        0x6 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(cty_isfalse.o)
+                0x00001434                __ctype_istrue
+                0x00001430                __ctype_isfalse
+ .text.ctype    0x00001436       0x14 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+                0x0000143c                islower
+                0x00001436                isupper
+                0x0000143a                isalpha
+                0x0000144a                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x0000144a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+                0x0000144a                exit
+                0x0000144a                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x0000144a        0x2 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+ *(.fini0)
+                0x0000144c                _etext = .
+
+.data           0x00800060        0xe load address 0x0000144c
+                0x00800060                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800060        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+ .data          0x00800060        0x3 ../usbdrv/usbdrv.o
+                0x00800060                usbMsgLen
+                0x00800062                usbTxLen1
+                0x00800061                usbTxLen
+ .data          0x00800063        0x0 ../usbdrv/oddebug.o
+ .data          0x00800063        0xb main.o
+ .data          0x0080006e        0x0 ../usbdrv/usbdrvasm.o
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_mulsi3.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_udivmodsi4.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(strlen_P.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fgetc.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fputc.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(ungetc.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(cty_isfalse.o)
+ .data          0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x0080006e                . = ALIGN (0x2)
+                0x0080006e                _edata = .
+                0x0080006e                PROVIDE (__data_end, .)
+
+.bss            0x0080006e       0x41
+                0x0080006e                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x0080006e        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+ .bss           0x0080006e        0x1 ../usbdrv/usbdrv.o
+ .bss           0x0080006f        0x0 ../usbdrv/oddebug.o
+ .bss           0x0080006f        0xb main.o
+                0x0080006f                expectReport
+                0x00800070                LEDstate
+ .bss           0x0080007a        0x0 ../usbdrv/usbdrvasm.o
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_mulsi3.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_udivmodsi4.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(strlen_P.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fgetc.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fputc.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(ungetc.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(cty_isfalse.o)
+ .bss           0x0080007a        0x0 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x0080007a       0x35 ../usbdrv/usbdrv.o
+                0x0080007a                usbTxBuf
+                0x00800085                usbTxBuf1
+                0x00800090                usbDeviceAddr
+                0x00800091                usbRxToken
+                0x00800092                usbInputBufOffset
+                0x00800093                usbMsgPtr
+                0x00800095                usbRxLen
+                0x00800096                usbNewDeviceAddr
+                0x00800097                usbCurrentTok
+                0x00800098                usbConfiguration
+                0x00800099                usbRxBuf
+                0x008000af                PROVIDE (__bss_end, .)
+                0x0000144c                __data_load_start = LOADADDR (.data)
+                0x0000145a                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x008000af        0x0
+                0x008000af                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x008000af                PROVIDE (__noinit_end, .)
+                0x008000af                _end = .
+                0x008000af                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.stab           0x00000000     0x14c4
+ *(.stab)
+ .stab          0x00000000      0x378 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+ .stab          0x00000378     0x114c ../usbdrv/usbdrvasm.o
+                               0x1158 (size before relaxing)
+
+.stabstr        0x00000000       0xb2
+ *(.stabstr)
+ .stabstr       0x00000000       0xb2 c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x40
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 ../usbdrv/usbdrv.o
+ .debug_aranges
+                0x00000020       0x20 main.o
+
+.debug_pubnames
+                0x00000000      0x27f
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000      0x1cd ../usbdrv/usbdrv.o
+ .debug_pubnames
+                0x000001cd       0xb2 main.o
+
+.debug_info     0x00000000      0xe91
+ *(.debug_info)
+ .debug_info    0x00000000      0x6d8 ../usbdrv/usbdrv.o
+ .debug_info    0x000006d8       0x5e ../usbdrv/oddebug.o
+ .debug_info    0x00000736      0x75b main.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x484
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x23c ../usbdrv/usbdrv.o
+ .debug_abbrev  0x0000023c       0x2a ../usbdrv/oddebug.o
+ .debug_abbrev  0x00000266      0x21e main.o
+
+.debug_line     0x00000000      0x88b
+ *(.debug_line)
+ .debug_line    0x00000000      0x3ed ../usbdrv/usbdrv.o
+ .debug_line    0x000003ed       0x78 ../usbdrv/oddebug.o
+ .debug_line    0x00000465      0x426 main.o
+
+.debug_frame    0x00000000       0x80
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x40 ../usbdrv/usbdrv.o
+ .debug_frame   0x00000040       0x40 main.o
+
+.debug_str      0x00000000      0x439
+ *(.debug_str)
+ .debug_str     0x00000000      0x300 ../usbdrv/usbdrv.o
+                                0x361 (size before relaxing)
+ .debug_str     0x00000300       0x14 ../usbdrv/oddebug.o
+                                 0xb1 (size before relaxing)
+ .debug_str     0x00000314      0x125 main.o
+                                0x2b2 (size before relaxing)
+
+.debug_loc      0x00000000      0x5d0
+ *(.debug_loc)
+ .debug_loc     0x00000000      0x440 ../usbdrv/usbdrv.o
+ .debug_loc     0x00000440      0x190 main.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(main.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000       0x68
+ .debug_ranges  0x00000000       0x50 ../usbdrv/usbdrv.o
+ .debug_ranges  0x00000050       0x18 main.o
+
+Cross Reference Table
+
+Symbol                                            File
+LEDstate                                          main.o
+__bad_interrupt                                   c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__bss_end                                         c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+__bss_start                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+__ctype_isfalse                                   c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(cty_isfalse.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o)
+__ctype_istrue                                    c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(cty_isfalse.o)
+__data_end                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+__data_load_start                                 c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+__data_start                                      c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+__do_clear_bss                                    c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_clear_bss.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(ungetc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fputc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fgetc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+                                                  main.o
+                                                  ../usbdrv/oddebug.o
+                                                  ../usbdrv/usbdrv.o
+__do_copy_data                                    c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_copy_data.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(ungetc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fputc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fgetc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+                                                  main.o
+                                                  ../usbdrv/oddebug.o
+                                                  ../usbdrv/usbdrv.o
+__heap_end                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__init                                            c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__mulsi3                                          c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_mulsi3.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+__stack                                           c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__udivmodsi4                                      c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_udivmodsi4.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+__vector_1                                        ../usbdrv/usbdrvasm.o
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_10                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_11                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_12                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_13                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_14                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_15                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_16                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_17                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_18                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_19                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_2                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_20                                       c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_3                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_4                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_5                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_6                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_7                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_8                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_9                                        c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vector_default                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+__vectors                                         c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+_exit                                             c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+decode_joy                                        main.o
+exit                                              c:/winavr/bin/../lib/gcc/avr/4.1.2/avr5\libgcc.a(_exit.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+expectReport                                      main.o
+fgetc                                             c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fgetc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+fputc                                             c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(fputc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+isalpha                                           c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o)
+islower                                           c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+isspace                                           c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isspace.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+isupper                                           c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(isalpha.o)
+keymap                                            main.o
+main                                              main.o
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5/crtm16.o
+modmask                                           main.o
+spec_keys                                         main.o
+strlen_P                                          c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(strlen_P.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+tolower                                           c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(tolower.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+ungetc                                            c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libc.a(ungetc.o)
+                                                  c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
+usbConfiguration                                  ../usbdrv/usbdrv.o
+usbCrc16                                          ../usbdrv/usbdrvasm.o
+usbCrc16Append                                    ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbCurrentTok                                     ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbDescriptorConfiguration                        ../usbdrv/usbdrv.o
+usbDescriptorDevice                               ../usbdrv/usbdrv.o
+usbDescriptorHidReport                            main.o
+                                                  ../usbdrv/usbdrv.o
+usbDescriptorString0                              ../usbdrv/usbdrv.o
+usbDescriptorStringDevice                         ../usbdrv/usbdrv.o
+usbDescriptorStringSerialNumber                   ../usbdrv/usbdrv.o
+usbDescriptorStringVendor                         ../usbdrv/usbdrv.o
+usbDeviceAddr                                     ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbFunctionSetup                                  main.o
+                                                  ../usbdrv/usbdrv.o
+usbFunctionWrite                                  main.o
+                                                  ../usbdrv/usbdrv.o
+usbInit                                           ../usbdrv/usbdrv.o
+                                                  main.o
+usbInputBufOffset                                 ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbMsgLen                                         ../usbdrv/usbdrv.o
+usbMsgPtr                                         main.o
+                                                  ../usbdrv/usbdrv.o
+usbNewDeviceAddr                                  ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbPoll                                           ../usbdrv/usbdrv.o
+                                                  main.o
+usbRxBuf                                          ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbRxLen                                          ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbRxToken                                        ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbSetInterrupt                                   ../usbdrv/usbdrv.o
+                                                  main.o
+usbTxBuf                                          ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbTxBuf1                                         ../usbdrv/usbdrvasm.o
+                                                  ../usbdrv/usbdrv.o
+usbTxLen                                          ../usbdrv/usbdrv.o
+                                                  ../usbdrv/usbdrvasm.o
+usbTxLen1                                         ../usbdrv/usbdrv.o
+                                                  ../usbdrv/usbdrvasm.o
+                                                  main.o
+vfprintf                                          c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libprintf_min.a(vfprintf_min.o)
+vfscanf                                           c:/winavr/bin/../lib/gcc/avr/4.1.2/../../../../avr/lib/avr5\libscanf_min.a(vfscanf_min.o)
