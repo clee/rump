@@ -107,25 +107,24 @@ the newest features and options.
 /* -------------------------- Device Description --------------------------- */
 
 /* We cannot use Obdev's free shared VID/PID pair because this is a HID.
- * We use John Hyde's VID (author of the book "USB Design By Example") for
- * this example instead. John has offered this VID for use by students for
- * non-commercial devices. Well... This example is for demonstration and
- * education only... DO NOT LET DEVICES WITH THIS VID ESCAPE YOUR LAB!
- * The Product-ID is a random number.
+ * Mikkel Holm Olsen (aka Spaceman Spiff) told me to use this VID/PID pair,
+ * which he registered for his SpiffChorders.
+ *
+ * FIXME: At some point, get our own VID/PID pair somehow.
  */
-#define  USB_CFG_VENDOR_ID  0x42, 0x42
+#define  USB_CFG_VENDOR_ID  0x40, 0x1C
 /* USB vendor ID for the device, low byte first. If you have registered your
  * own Vendor ID, define it here. Otherwise you use obdev's free shared
  * VID/PID pair. Be sure to read USBID-License.txt for rules!
  */
-#define  USB_CFG_DEVICE_ID  0xad, 0xde
+#define  USB_CFG_DEVICE_ID  0xA3, 0x05
 /* This is the ID of the product, low byte first. It is interpreted in the
  * scope of the vendor ID. If you have registered your own VID with usb.org
  * or if you have licensed a PID from somebody else, define it here. Otherwise
  * you use obdev's free shared VID/PID pair. Be sure to read the rules in
  * USBID-License.txt!
  */
-#define USB_CFG_DEVICE_VERSION  0x98, 0x01
+#define USB_CFG_DEVICE_VERSION  0x98, 0x00
 /* Version number of the device: Minor number first, then major number.
  */
 #define USB_CFG_VENDOR_NAME     'S','p','a','c','e','m','a','n',' ',\
@@ -139,15 +138,18 @@ the newest features and options.
  * ALWAYS define a vendor name containing your Internet domain name if you use
  * obdev's free shared VID/PID pair. See the file USBID-License.txt for
  * details.
+ *
+ * FIXME: Once we have our own VID/PID, change the vendor name
  */
-#define USB_CFG_DEVICE_NAME     'S','p','i','f','f','\'','s',' ','C','6',\
-                                '4',' ','K','e','y','b','o','a','r','d'
-#define USB_CFG_DEVICE_NAME_LEN 20
+#define USB_CFG_DEVICE_NAME     'S','p','i','f','f','C','h','o','r','d','e','r'
+#define USB_CFG_DEVICE_NAME_LEN 12
 /* Same as above for the device name. If you don't want a device name, undefine
  * the macros. See the file USBID-License.txt before you assign a name.
+ *
+ * FIXME: Once we have our own VID/PID, change the device name
  */
-#define USB_CFG_SERIAL_NUMBER   '4', '2'
-#define USB_CFG_SERIAL_NUMBER_LEN   2
+// #define USB_CFG_SERIAL_NUMBER   '4', '2'
+// #define USB_CFG_SERIAL_NUMBER_LEN   2
 /* Same as above for the serial number. If you don't want a serial number,
  * undefine the macros.
  * It may be useful to provide the serial number through other means than at
