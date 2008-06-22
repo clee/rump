@@ -134,7 +134,7 @@ char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH]
 };
 
 /* This buffer holds the last values of the scanned keyboard matrix */
-static uchar bitbuf[NUMROWS]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
+static uchar bitbuf[NUMROWS]={ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
 /* The ReportBuffer contains the USB report sent to the PC */
 static uchar reportBuffer[8];    /* buffer for HID reports */

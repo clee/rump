@@ -15,7 +15,7 @@
 #include <avr/pgmspace.h>
 
 /* Number of rows in IBM keyboard matrix */
-#define NUMROWS 17
+#define NUMROWS 16
 
 /* The USB keycodes are enumerated here - the first part is simply
    an enumeration of the allowed scan-codes used for USB HID devices */
@@ -148,9 +148,9 @@ const unsigned char keymap[NUMROWS][8] PROGMEM = { // IBM Model M keymap
     { 0,           KEY_F7,     KEY_F8,    KEY_9,      KEY_O,      KEY_L,       KEY_dot,     0 },
     { KEY_ping,    KEY_lbr,    KEY_minus, KEY_0,      KEY_P,      KEY_smcol,   0,           KEY_slash },
     { 0,           KEY_KP4,    KEY_del,   KEY_F11,    KEY_KP7,    KEY_KP1,     KEY_numlock, KEY_darr },
-    { KEY_KP0,     KEY_KP5,    KEY_ins,   KEY_F12,    KEY_KP8,    KEY_KP2,     KEY_kpslash, KEY_rarr },
+    { KEY_KP0,     KEY_KP5,    KEY_ins,   KEY_F12,    KEY_KP8,    KEY_KP2,     KEY_KPslash, KEY_rarr },
     { KEY_KPcomma, KEY_KP6,    KEY_pgup,  KEY_pgdn,   KEY_KP9,    KEY_KP3,     KEY_KPast,   KEY_KPminus },
-    { KEY_uarr,    0,          KEY_home,  KEY_end,    KEY_KPplus, KEY_KPenter, KEY_pause,   KEY_larr },
+    { KEY_uarr,    0,          KEY_home,  KEY_end,    KEY_KPplus, KEY_KPenter, KEY_break,   KEY_larr },
     { MOD_LALT,    0,          0,         KEY_PrtScr, KEY_scrlck, 0,           0,           MOD_RALT },
     { 0,           0,          0,         0,          0,          0,           0,           0 }
 };

@@ -47,7 +47,7 @@
 #----------------------------------------------------------------------------
 
 # The keyboard map to use, e.g. key_us_us.h
-KEYMAP = key_us_us.h
+KEYMAP = ibm_1391401.h
 
 
 # MCU name
