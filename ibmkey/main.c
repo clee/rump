@@ -180,24 +180,26 @@ static uchar scankeys(void) {
   static uchar debounce=5;
 
   for (row=0;row<NUMROWS;++row) { /* Scan all rows */
+    // Load the scan mask from modmask
+    data = pgm_read_byte(&modmask[row]);
     if (row<=7) {
-      DDRD&=~(1<<7); /* PD7 as input*/
-      PORTD|=(1<<7); /* Enable pull-up */
-      data=pgm_read_byte(&modmask[row]);
-      DDRB=data;
-      PORTB=~data;
-    } else { /* Must be row 8 */
-      DDRB=0;
-      PORTB=0xFF;
-      DDRD|=(1<<7); /* select PD7 = row8 */
-      PORTD&=~(1<<7);
+      DDRC = 0;      // Port C to weak pullups
+      PORTC = 0xFF;
+      DDRA = data;   // Scan on A
+      PORTA = ~data;
+    } else { /* Rows 8-15 */
+      DDRA = 0;      // Port A to weak pullups
+      PORTA = 0xFF;
+      DDRC = data;   // Scan on C
+      PORTD = ~data;
     }
 
     _delay_us(30); /* Used to be small loop, but the compiler optimized it away ;-) */
 
-    data=PINC;
-    if (data^bitbuf[row]) {
-      debounce=10; /* If a change was detected, activate debounce counter */
+    // Read column output on B.
+    data = PINB;
+    if (data ^ bitbuf[row]) {
+      debounce = 10; /* If a change was detected, activate debounce counter */
     }
     bitbuf[row]=data; /* Store the result */
   }
