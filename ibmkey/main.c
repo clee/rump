@@ -180,8 +180,8 @@ static uchar scankeys(void) {
   static uchar debounce=5;
 
   for (row=0;row<NUMROWS;++row) { /* Scan all rows */
-    // Load the scan mask from modmask
-    data = pgm_read_byte(&modmask[row]);
+    // Load the scan byte mask from modmask
+    data = pgm_read_byte(&modmask[row & 7]);
     if (row<=7) {
       DDRC = 0;      // Port C to weak pullups
       PORTC = 0xFF;
