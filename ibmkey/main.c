@@ -142,8 +142,16 @@ static uchar idleRate;           /* in 4 ms units */
 static uchar protocolVer=1;      /* 0 is the boot protocol, 1 is report protocol */
 
 static void hardwareInit(void) {
-	PORTA = 0xFF;   /* Port A = J4 pins 1-8 */
-	DDRA  = 0x00;   /* Port A is... input? */
+	/*
+	 * Theory of operation:
+	 * Initially, all keyboard scan keys are set as inputs, but with
+	 * pullups.  This causes them to be "weak" +5 outputs.
+	 * To scan, we set one line as a low output, causing it to "win"
+	 * over the weak outputs.
+	 */
+	PORTA = 0xFF;   /* Port A = J4 pins 1-8 - enable pull-up */
+	DDRA  = 0x00;   /* Port A is input */
+
 	PORTB = 0xFF;   /* Port B are row drivers - enable pull-up */
 	DDRB  = 0x00;   /* Port B is input */
 
