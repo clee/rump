@@ -177,9 +177,9 @@ static uchar scankeys(void) {
   uchar retval=0;
   uchar row,data,key, modkeys;
   volatile uchar col, mask;
-  static uchar debounce=5;
+  static uchar debounce = 5;
 
-  for (row=0;row<NUMROWS;++row) { /* Scan all rows */
+  for (row = 0; row < NUMROWS; ++row) { /* Scan all rows */
     // Load the scan byte mask from modmask
     data = pgm_read_byte(&modmask[row & 7]);
     if (row<=7) {
@@ -191,7 +191,7 @@ static uchar scankeys(void) {
       DDRA = 0;      // Port A to weak pullups
       PORTA = 0xFF;
       DDRC = data;   // Scan on C
-      PORTD = ~data;
+      PORTC = ~data;
     }
 
     _delay_us(30); /* Used to be small loop, but the compiler optimized it away ;-) */
