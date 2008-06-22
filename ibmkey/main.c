@@ -65,6 +65,20 @@
  *                GND   GND
  */
 
+#define HEX__(n) 0x##n##LU 
+
+/* 8-bit conversion function */ 
+#define B8__(x) ((x&0x0000000FLU)?1:0) \
++((x&0x000000F0LU)?2:0) \
++((x&0x00000F00LU)?4:0) \
++((x&0x0000F000LU)?8:0) \
++((x&0x000F0000LU)?16:0) \
++((x&0x00F00000LU)?32:0) \
++((x&0x0F000000LU)?64:0) \
++((x&0xF0000000LU)?128:0) 
+
+#define B8(d) ((unsigned char)B8__(HEX__(d))) 
+
 /* The LED states */
 #define LED_NUM     0x01
 #define LED_CAPS    0x02
@@ -77,7 +91,7 @@
    used for other x -> 2^x conversions (lookup table). */
 const char modmask[8] PROGMEM = {
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
-};
+  };
 
 
 /* USB report descriptor (length is defined in usbconfig.h)
@@ -120,7 +134,7 @@ char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH]
 };
 
 /* This buffer holds the last values of the scanned keyboard matrix */
-static uchar bitbuf[NUMROWS] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+static uchar bitbuf[NUMROWS]={0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
 
 /* The ReportBuffer contains the USB report sent to the PC */
 static uchar reportBuffer[8];    /* buffer for HID reports */
@@ -128,137 +142,137 @@ static uchar idleRate;           /* in 4 ms units */
 static uchar protocolVer=1;      /* 0 is the boot protocol, 1 is report protocol */
 
 static void hardwareInit(void) {
-  PORTB = 0xFF;   /* Port B are row drivers - enable pull-up */
-  DDRB  = 0x00;   /* Port B is input */
+	PORTA = 0xFF;   /* Port A = J4 pins 1-8 */
+	DDRA  = 0x00;   /* Port A is... input? */
+	PORTB = 0xFF;   /* Port B are row drivers - enable pull-up */
+	DDRB  = 0x00;   /* Port B is input */
 
-  PORTC = 0xFF;   /* activate all pull-ups */
-  DDRC  = 0x00;   /* all pins input */
-  
-  PORTD = 0xfa;   /* 1111 1010 bin: activate pull-ups except on USB lines */
-  DDRD  = 0x07;   /* 0000 0111 bin: all pins input except USB (-> USB reset) */
+	PORTC = 0xFF;   /* activate all pull-ups */
+	DDRC  = 0x00;   /* all pins input */
 
-  /* USB Reset by device only required on Watchdog Reset */
-  _delay_us(11);   /* delay >10ms for USB reset */ 
+	PORTD = 0xfa;   /* 1111 1010 bin: activate pull-ups except on USB lines */
+	DDRD  = 0x07;   /* 0000 0111 bin: all pins input except USB (-> USB reset) */
 
-  DDRD = 0x02;    /* 0000 0010 bin: remove USB reset condition */
-  /* configure timer 0 for a rate of 12M/(1024 * 256) = 45.78 Hz (~22ms) */
-  TCCR0 = 5;      /* timer 0 prescaler: 1024 */
+	/* USB Reset by device only required on Watchdog Reset */
+	_delay_us(11);   /* delay >10ms for USB reset */ 
+
+	DDRD = 0x02;    /* 0000 0010 bin: remove USB reset condition */
+	/* configure timer 0 for a rate of 12M/(1024 * 256) = 45.78 Hz (~22ms) */
+	TCCR0 = 5;      /* timer 0 prescaler: 1024 */
 }
 
 /* This function scans the entire keyboard, debounces the keys, and
    if a key change has been found, a new report is generated, and the
    function returns true to signal the transfer of the report. */
 static uchar scankeys(void) {   
-  uchar reportIndex = 1; /* First available report entry is 2 */
-  uchar retval = 0;
-  uchar row, data, key, modkeys;
+  uchar reportIndex=1; /* First available report entry is 2 */
+  uchar retval=0;
+  uchar row,data,key, modkeys;
   volatile uchar col, mask;
-  static uchar debounce = 5;
+  static uchar debounce=5;
 
-  for (row = 0;row < NUMROWS; ++row) { /* Scan all rows */
-    if (row <= 7) {
-      DDRD  &= ~(1 << 7); /* PD7 as input*/
-      PORTD |= (1 << 7); /* Enable pull-up */
-      data = pgm_read_byte(&modmask[row]);
-      DDRB = data;
-      PORTB = ~data;
+  for (row=0;row<NUMROWS;++row) { /* Scan all rows */
+    if (row<=7) {
+      DDRD&=~(1<<7); /* PD7 as input*/
+      PORTD|=(1<<7); /* Enable pull-up */
+      data=pgm_read_byte(&modmask[row]);
+      DDRB=data;
+      PORTB=~data;
     } else { /* Must be row 8 */
-      DDRB = 0;
-      PORTB = 0xFF;
-      DDRD |= (1<<7); /* select PD7 = row8 */
-      PORTD &= ~(1<<7);
+      DDRB=0;
+      PORTB=0xFF;
+      DDRD|=(1<<7); /* select PD7 = row8 */
+      PORTD&=~(1<<7);
     }
-    
+
     _delay_us(30); /* Used to be small loop, but the compiler optimized it away ;-) */
-    
+
     data=PINC;
-    if (data ^ bitbuf[row]) { 
-      debounce = 10; /* If a change was detected, activate debounce counter */
+    if (data^bitbuf[row]) {
+      debounce=10; /* If a change was detected, activate debounce counter */
     }
     bitbuf[row]=data; /* Store the result */
   }
 
-  if (debounce == 1) { /* Debounce counter expired */
-    modkeys = 0;
-    memset(reportBuffer, 0, sizeof(reportBuffer)); /* Clear report buffer */
-    for (row = 0; row < NUMROWS; ++row) { /* Process all rows for key-codes */
+  if (debounce==1) { /* Debounce counter expired */
+    modkeys=0;
+    memset(reportBuffer,0,sizeof(reportBuffer)); /* Clear report buffer */
+    for (row=0;row<NUMROWS;++row) { /* Process all rows for key-codes */
       data=bitbuf[row]; /* Restore buffer */
       
       if (data!=0xFF) { /* Anything on this row? - optimization */
-        for (col = 0, mask = 1; col < 8; ++col, mask <<= 1) { /* yes - check individual bits */
-          if (!(data & mask)) { /* Key detected */
-            /* Read keyboard map */
-            key = pgm_read_byte(&keymap[row][col]);
-            if (key > KEY_Special) { /* Special handling of shifted keys */
+        for (col=0,mask=1;col<8;++col,mask<<=1) { /* yes - check individual bits */
+          if (!(data&mask)) { /* Key detected */
+            key=pgm_read_byte(&keymap[row][col]); /* Read keyboard map */
+            if (key>KEY_Special) { /* Special handling of shifted keys */
               /* Modifiers have not been decoded yet - handle manually */
-              uchar keynum = key - (KEY_Special + 1);
-              if ((bitbuf[4] & 0b01000000) && /* Rshift */
-                   ((bitbuf[7] & 0b00000010) || (key >= SPC_crsrud))) {/* Lshift */
-                key = pgm_read_byte(&spec_keys[keynum][0]); /* Unmodified */
-                modkeys = pgm_read_byte(&spec_keys[keynum][1]);
+              uchar keynum=key-(KEY_Special+1);
+              if ((bitbuf[4]&B8(01000000))&& /* Rshift */
+                   ((bitbuf[7]&B8(00000010))||(key>=SPC_crsrud))) {/* Lshift */
+                key=pgm_read_byte(&spec_keys[keynum][0]); /* Unmodified */
+                modkeys=pgm_read_byte(&spec_keys[keynum][1]);
               } else {
-                key = pgm_read_byte(&spec_keys[keynum][2]); /* Shifted */
-                modkeys = pgm_read_byte(&spec_keys[keynum][3]);
+                key=pgm_read_byte(&spec_keys[keynum][2]); /* Shifted */
+                modkeys=pgm_read_byte(&spec_keys[keynum][3]);
               }
-            } else if (key > KEY_Modifiers) { /* Is this a modifier key? */
-              reportBuffer[0] |= pgm_read_byte(&modmask[key - (KEY_Modifiers + 1)]);
-              key = 0;
+            } else if (key>KEY_Modifiers) { /* Is this a modifier key? */
+              reportBuffer[0]|=pgm_read_byte(&modmask[key-(KEY_Modifiers+1)]);
+              key=0;
             }
             if (key) { /* Normal keycode should be added to report */
-              if (++reportIndex >= sizeof(reportBuffer)) { /* Too many keycodes - rollOver */
-                if (!retval & 0x02) { /* Only fill buffer once */
-                  memset(reportBuffer + 2, KEY_errorRollOver, sizeof(reportBuffer) - 2);
-                  retval |= 2; /* continue decoding to get modifiers */
+              if (++reportIndex>=sizeof(reportBuffer)) { /* Too many keycodes - rollOver */
+                if (!retval&0x02) { /* Only fill buffer once */
+                  memset(reportBuffer+2, KEY_errorRollOver, sizeof(reportBuffer)-2);
+                  retval|=2; /* continue decoding to get modifiers */
                 }
               } else {
-                reportBuffer[reportIndex] = key; /* Set next available entry */
+                reportBuffer[reportIndex]=key; /* Set next available entry */
               }
             }
           }
         }
       }
     }
-
-    if (modkeys & 0x80) { /* Clear RSHIFT */
-      reportBuffer[0] &= ~0x20;
+    if (modkeys&0x80) { /* Clear RSHIFT */
+      reportBuffer[0]&=~0x20;
     }
-    if (modkeys & 0x08) { /* Clear LSHIFT */
-      reportBuffer[0] &= ~0x02;
+    if (modkeys&0x08) { /* Clear LSHIFT */
+      reportBuffer[0]&=~0x02;
     }
-    reportBuffer[0] |= modkeys & 0x77; /* Set other modifiers */
+    reportBuffer[0]|=modkeys&0x77; /* Set other modifiers */
 
-    retval |= 1; /* Must have been a change at some point, since debounce is done */
+    retval|=1; /* Must have been a change at some point, since debounce is done */
   }
   if (debounce) debounce--; /* Count down, but avoid underflow */
   return retval;
 }
 
-uchar expectReport = 0;
-uchar LEDstate = 0;
+uchar expectReport=0;
+uchar LEDstate=0;
 
 uchar usbFunctionSetup(uchar data[8]) {
   usbRequest_t *rq = (void *)data;
   usbMsgPtr = reportBuffer;
-  if ((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS) { /* class request type */
-    if(rq->bRequest == USBRQ_HID_GET_REPORT) {
+  if((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS){    /* class request type */
+    if(rq->bRequest == USBRQ_HID_GET_REPORT){  
       /* wValue: ReportType (highbyte), ReportID (lowbyte) */
       /* we only have one report type, so don't look at wValue */
       return sizeof(reportBuffer);
-    } else if (rq->bRequest == USBRQ_HID_SET_REPORT) {
+    }else if(rq->bRequest == USBRQ_HID_SET_REPORT){
       if (rq->wLength.word == 1) { /* We expect one byte reports */
-        expectReport = 1;
+        expectReport=1;
         return 0xFF; /* Call usbFunctionWrite with data */
       }  
-    } else if (rq->bRequest == USBRQ_HID_GET_IDLE) {
+    }else if(rq->bRequest == USBRQ_HID_GET_IDLE){
       usbMsgPtr = &idleRate;
       return 1;
-    } else if (rq->bRequest == USBRQ_HID_SET_IDLE){
+    }else if(rq->bRequest == USBRQ_HID_SET_IDLE){
       idleRate = rq->wValue.bytes[1];
-    } else if (rq->bRequest == USBRQ_HID_GET_PROTOCOL) {
+    }else if(rq->bRequest == USBRQ_HID_GET_PROTOCOL) {
       if (rq->wValue.bytes[1] < 1) {
         protocolVer = rq->wValue.bytes[1];
       }
-    } else if (rq->bRequest == USBRQ_HID_SET_PROTOCOL) {
+    }else if(rq->bRequest == USBRQ_HID_SET_PROTOCOL) {
       usbMsgPtr = &protocolVer;
       return 1;
     }
@@ -267,17 +281,17 @@ uchar usbFunctionSetup(uchar data[8]) {
 }
 
 uchar usbFunctionWrite(uchar *data, uchar len) {
-  if ((expectReport) && (len == 1)) {
-    LEDstate = data[0]; /* Get the state of all 5 LEDs */
-    if (LEDstate & LED_CAPS) { /* Check state of CAPS lock LED */
-      PORTD |= 0x02;
+  if ((expectReport)&&(len==1)) {
+    LEDstate=data[0]; /* Get the state of all 5 LEDs */
+    if (LEDstate&LED_CAPS) { /* Check state of CAPS lock LED */
+      PORTD|=0x02;
     } else {
-      PORTD &= ~0x02;
+      PORTD&=~0x02;
     }
-    expectReport = 0;
+    expectReport=0;
     return 1;
   }
-  expectReport = 0;
+  expectReport=0;
   return 0x01;
 }
 
@@ -293,19 +307,19 @@ int main(void) {
   usbInit(); /* Initialize USB stack processing */
   sei(); /* Enable global interrupts */
   
-  for (;;) {  /* Main loop */
+  for(;;){  /* Main loop */
     wdt_reset(); /* Reset the watchdog */
     usbPoll(); /* Poll the USB stack */
 
-    updateNeeded |= scankeys(); /* Scan the keyboard for changes */
+    updateNeeded|=scankeys(); /* Scan the keyboard for changes */
     
     /* Check timer if we need periodic reports */
-    if (TIFR & (1 << TOV0)) {
-      TIFR = 1 << TOV0; /* Reset flag */
-      if (idleRate != 0) { /* Do we need periodic reports? */
-        if (idleCounter > 4){ /* Yes, but not yet */
+    if(TIFR & (1<<TOV0)){
+      TIFR = 1<<TOV0; /* Reset flag */
+      if(idleRate != 0){ /* Do we need periodic reports? */
+        if(idleCounter > 4){ /* Yes, but not yet */
           idleCounter -= 5;   /* 22 ms in units of 4 ms */
-        } else { /* Yes, it is time now */
+        }else{ /* Yes, it is time now */
           updateNeeded = 1;
           idleCounter = idleRate;
         }

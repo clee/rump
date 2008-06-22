@@ -65,6 +65,20 @@
  *                GND   GND
  */
 
+#define HEX__(n) 0x##n##LU 
+
+/* 8-bit conversion function */ 
+#define B8__(x) ((x&0x0000000FLU)?1:0) \
++((x&0x000000F0LU)?2:0) \
++((x&0x00000F00LU)?4:0) \
++((x&0x0000F000LU)?8:0) \
++((x&0x000F0000LU)?16:0) \
++((x&0x00F00000LU)?32:0) \
++((x&0x0F000000LU)?64:0) \
++((x&0xF0000000LU)?128:0) 
+
+#define B8(d) ((unsigned char)B8__(HEX__(d))) 
+
 /* The LED states */
 #define LED_NUM     0x01
 #define LED_CAPS    0x02
@@ -191,8 +205,8 @@ static uchar scankeys(void) {
             if (key>KEY_Special) { /* Special handling of shifted keys */
               /* Modifiers have not been decoded yet - handle manually */
               uchar keynum=key-(KEY_Special+1);
-              if ((bitbuf[4]&0b01000000)&& /* Rshift */
-                   ((bitbuf[7]&0b00000010)||(key>=SPC_crsrud))) {/* Lshift */
+              if ((bitbuf[4]&B8(01000000))&& /* Rshift */
+                   ((bitbuf[7]&B8(00000010))||(key>=SPC_crsrud))) {/* Lshift */
                 key=pgm_read_byte(&spec_keys[keynum][0]); /* Unmodified */
                 modkeys=pgm_read_byte(&spec_keys[keynum][1]);
               } else {
