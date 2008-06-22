@@ -133,36 +133,6 @@ enum keycodes {
   MOD_RSHIFT,   // 0x20
   MOD_RALT,     // 0x40
   MOD_RGUI,     // 0x80
-  
-  /* Other keys that need special handling -
-     These are looked up in the table spec_keys because they do not
-     generate the same scan-code in the shifted and unshifted state,
-     and some may need to alter the shift-state to generate the
-     correct character code on the PC */
-  KEY_Special,
-  SPC_2,
-  SPC_6,
-  SPC_7,
-  SPC_8,
-  SPC_9,
-  SPC_0,
-  SPC_plus,
-  SPC_minus,
-  SPC_pound,
-  SPC_home,
-  SPC_del,
-  SPC_ast,
-  SPC_equal,
-  SPC_crsrud,
-  SPC_crsrlr,
-  SPC_F1,
-  SPC_F3,
-  SPC_F5,
-  SPC_F7,
-  SPC_hat,
-  SPC_colon,
-  SPC_smcol,
-  SPC_at
 };
 
 const unsigned char keymap[NUMROWS][8] PROGMEM = { // IBM Model M keymap

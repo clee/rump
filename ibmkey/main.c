@@ -212,18 +212,7 @@ static uchar scankeys(void) {
         for (col=0,mask=1;col<8;++col,mask<<=1) { /* yes - check individual bits */
           if (!(data&mask)) { /* Key detected */
             key=pgm_read_byte(&keymap[row][col]); /* Read keyboard map */
-            if (key>KEY_Special) { /* Special handling of shifted keys */
-              /* Modifiers have not been decoded yet - handle manually */
-              uchar keynum=key-(KEY_Special+1);
-              if ((bitbuf[4]&B8(01000000))&& /* Rshift */
-                   ((bitbuf[7]&B8(00000010))||(key>=SPC_crsrud))) {/* Lshift */
-                key=pgm_read_byte(&spec_keys[keynum][0]); /* Unmodified */
-                modkeys=pgm_read_byte(&spec_keys[keynum][1]);
-              } else {
-                key=pgm_read_byte(&spec_keys[keynum][2]); /* Shifted */
-                modkeys=pgm_read_byte(&spec_keys[keynum][3]);
-              }
-            } else if (key>KEY_Modifiers) { /* Is this a modifier key? */
+            if (key>KEY_Modifiers) { /* Is this a modifier key? */
               reportBuffer[0]|=pgm_read_byte(&modmask[key-(KEY_Modifiers+1)]);
               key=0;
             }
