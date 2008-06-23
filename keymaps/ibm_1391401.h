@@ -155,36 +155,4 @@ const unsigned char keymap[NUMROWS][8] PROGMEM = { // IBM Model M keymap
 	{ KEY_F6,      KEY_rbr,    KEY_equal, KEY_8,      KEY_I,      KEY_K,       KEY_comma,   0 }				// row  9
 };
 
-/* Special keys that need to generate different scan-codes for unshifted
-   and shifted states, or that need to alter the modifier keys. 
-   Since the LGUI and RGUI bits are not used, these signify that the
-   left and right shift states should be deleted from report, so
-     0x88 means clear both shift flags
-     0x00 means do not alter shift states
-     0xC8 means clear both shifts and set L_ALT */
-const unsigned char spec_keys[23][4] PROGMEM = {
-  { KEY_2,       0x00, KEY_ping,    0x00}, // SPC_2 - shift-2 is "
-  { KEY_6,       0x00, KEY_7,       0x00}, // SPC_6 - shift-6 is &
-  { KEY_7,       0x00, KEY_ping,    0x88}, // SPC_7 - shift-7 is '
-  { KEY_8,       0x00, KEY_9,       0x00}, // SPC_8 - shift-8 is (
-  { KEY_9,       0x00, KEY_0,       0x00}, // SPC_9 - shift-9 is )
-  { KEY_0,       0x00, KEY_0,       0x88}, // SPC_0 - shift-0 is 0
-  { KEY_equal,   0x02, KEY_equal,   0x8A}, // SPC_plus 
-  { KEY_minus,   0x00, KEY_minus,   0x88}, // SPC_minus - "-" and "-"
-  { KEY_grave,   0x02, KEY_grave,   0x8A}, // SPC_pound - "~"
-  { KEY_home,    0x80, KEY_end,     0x80}, // SPC_home - home and end
-  { KEY_bckspc,  0x00, KEY_del,     0x88}, // SPC_del - backspace and delete
-  { KEY_8,       0x02, KEY_8,       0x02}, // SPC_ast - "*" (Asterix)
-  { KEY_equal,   0x00, KEY_equal,   0x88}, // SPC_equal - "="
-  { KEY_darr,    0x80, KEY_uarr,    0x80}, // SPC_crsrud - cursor down/up
-  { KEY_rarr,    0x80, KEY_larr,    0x80}, // SPC_crsrlr - cursor right/left
-  { KEY_F1,      0x80, KEY_F2,      0x80}, // SPC_F1 - F1 and F2
-  { KEY_F3,      0x80, KEY_F4,      0x80}, // SPC_F3 - F3 and F4
-  { KEY_F5,      0x80, KEY_F6,      0x80}, // SPC_F5 - F5 and F6
-  { KEY_F7,      0x80, KEY_F8,      0x80}, // SPC_F7 - F7 and F8
-  { KEY_6,       0x02, KEY_6,       0x00}, // SPC_hat - "^"
-  { KEY_smcol,   0x02, KEY_lbr,     0x88}, // SPC_colon - : and [
-  { KEY_smcol,   0x00, KEY_rbr,     0x88}, // SPC_smcol - ; and ]
-  { KEY_2,       0x8A, KEY_2,       0x8A}, // SPC_at - @
-};
 #endif
