@@ -210,66 +210,64 @@ static uchar scankeys(void) {
 		bitbuf[row] = data; 
 	}
 
-	/* Debounce counter expired */
-	if (debounce == 1) {
-		modkeys = 0;
-		/* Clear report buffer */
-		memset(reportBuffer, 0, sizeof(reportBuffer));
-		/* Process all rows for key-codes */
-		for (row = 0; row < NUMROWS; ++row) {
-			/* Restore buffer */
-			data = bitbuf[row];
-
-			/* Anything on this row? - optimization */
-			if (data != 0xFF) { 
-				/* yes - check individual bits */
-				for (col = 0, mask = 1; col < 8; ++col, mask <<= 1) {
-					/* Key detected */
-					if (!(data & mask)) {
-						/* Read keyboard map */
-						key = pgm_read_byte(&keymap[row][col]);
-						/* Is this a modifier key? */
-						if (key > KEY_Modifiers) {
-							reportBuffer[0] |= pgm_read_byte(&modmask[key - (KEY_Modifiers + 1)]);
-							key = 0;
-						}
-						/* Normal keycode should be added to report */
-						if (key) {
-							/* Too many keycodes - rollOver */
-							if (++reportIndex >= sizeof(reportBuffer)) {
-								/* Only fill buffer once */
-								if (!retval & 0x02) {
-									memset(reportBuffer + 2, KEY_errorRollOver, sizeof(reportBuffer) - 2);
-									/* continue decoding to get modifiers */
-									retval |= 2; 
-								}
-							} else {
-								/* Set next available entry */
-								reportBuffer[reportIndex] = key;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		/* Clear RSHIFT */
-		if (modkeys & 0x80)
-			reportBuffer[0] &= ~0x20;
-
-		/* Clear LSHIFT */
-		if (modkeys & 0x08)
-			reportBuffer[0] &= ~0x02;
-
-		/* Set other modifiers */
-		reportBuffer[0] |= modkeys & 0x77;
-
-		/* Must have been a change at some point, since debounce is done */
-		retval |= 1;
+	/* Count down, but avoid underflow */
+	if (debounce > 1) {
+		debounce--;
+		return retval;
 	}
 
-	/* Count down, but avoid underflow */
-	if (debounce) debounce--;
+	modkeys = 0;
+	/* Clear report buffer */
+	memset(reportBuffer, 0, sizeof(reportBuffer));
+	/* Process all rows for key-codes */
+
+	for (row = 0; row < NUMROWS; ++row) {
+		/* Anything on this row? - if not, skip it */
+		if (0xFF == bitbuf[row]) { continue; }
+
+		/* Restore buffer */
+		data = bitbuf[row];
+
+		for (col = 0, mask = 1; col < 8; ++col, mask <<= 1) {
+			/* If no key detected, jump to the next column */
+			if (data & mask) { continue; }
+			/* Read keyboard map */
+			key = pgm_read_byte(&keymap[row][col]);
+			/* Is this a modifier key? */
+			if (key > KEY_Modifiers) {
+				reportBuffer[0] |= pgm_read_byte(&modmask[key - (KEY_Modifiers + 1)]);
+				continue;
+			}
+
+			/* Too many keycodes - rollOver */
+			if (++reportIndex >= sizeof(reportBuffer)) {
+				/* Only fill buffer once */
+				if (!retval & 0x02) {
+					memset(reportBuffer + 2, KEY_errorRollOver, sizeof(reportBuffer) - 2);
+					/* continue decoding to get modifiers */
+					retval |= 2;
+				}
+			} else {
+				/* Set next available entry */
+				reportBuffer[reportIndex] = key;
+			}
+		}
+	}
+
+	/* Clear RSHIFT */
+	if (modkeys & 0x80)
+		reportBuffer[0] &= ~0x20;
+
+	/* Clear LSHIFT */
+	if (modkeys & 0x08)
+		reportBuffer[0] &= ~0x02;
+
+	/* Set other modifiers */
+	reportBuffer[0] |= modkeys & 0x77;
+
+	/* Must have been a change at some point, since debounce is done */
+	retval |= 1;
+
 	return retval;
 }
 
