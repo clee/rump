@@ -173,10 +173,10 @@ static uchar scankeys(void) {
 			// Scan on A
 			DDRA  = data;
 			PORTA = ~data;
-		} else { 
+		} else {
 			/* Rows 8 -> 15 */
 			// Port A to weak pullups
-			DDRA  = 0x00;      
+			DDRA  = 0x00;
 			PORTA = 0xFF;
 			// Scan on C
 			DDRC  = data;
@@ -188,10 +188,12 @@ static uchar scankeys(void) {
 
 		// Read column output on B.
 		data = PINB;
+
 		/* If a change was detected, activate debounce counter */
 		if (data ^ bitbuf[row]) {
 			debounce = 10; 
 		}
+
 		/* Store the result */
 		bitbuf[row] = data; 
 	}
