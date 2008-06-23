@@ -154,8 +154,8 @@ static void hardwareInit(void) {
 	PORTC = 0xFF;   /* activate all pull-ups */
 	DDRC  = 0x00;   /* all pins input */
 
-	PORTD = 0xfa;   /* 1111 1010 bin: activate pull-ups except on USB lines */
-	DDRD  = 0x07;   /* 0000 0111 bin: all pins input except USB (-> USB reset) */
+	PORTD = 0x00;   /* 0000 0000 bin: leave PORTD alone */
+	DDRD  = 0x05;   /* 0000 0101 bin: these pins are for USB output */
 
 	/* USB Reset by device only required on Watchdog Reset */
 	_delay_us(11);   /* delay >10ms for USB reset */ 
@@ -311,13 +311,15 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 		/* Get the state of all 5 LEDs */
 		LEDstate = data[0];
 		/* Check state of CAPS lock LED */
+/* New idea: Let's not mess with PORTD.
 		if (LEDstate & LED_CAPS) {
 			PORTD |= 0x02;
 		} else {
 			PORTD &= ~0x02;
 		}
+*/
 		expectReport = 0;
-		return 1;
+		return 0x01;
 	}
 	expectReport = 0;
 	return 0x01;
