@@ -1,20 +1,20 @@
-/*********************************************************************
- * main.c - Main firmware (ATmega16 version)                         *
- * $Id: $
- * Version 1.98ß                                                     *
- *********************************************************************
- * c64key is Copyright (C) 2006-2007 Mikkel Holm Olsen               *
- * based on HID-Test by Christian Starkjohann, Objective Development *
- *********************************************************************
- * Spaceman Spiff's Commodire 64 USB Keyboard (c64key for short) is  *
- * is free software; you can redistribute it and/or modify it under  *
- * the terms of the OBDEV license, as found in the licence.txt file. *
- *                                                                   *
- * c64key is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of    *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the     *
- * OBDEV license for further details.                                *
- *********************************************************************/
+/**********************************************************************
+ * main.c - Main firmware (ATmega16/ATmega32 version)                 *
+ * Version 1.00                                                       *
+ **********************************************************************
+ * rump is copyright (C) 2008 Chris Lee <clee@mg8.org>                *
+ * based on c64key, copyright (C) 2006-2007 Mikkel Holm Olsen         *
+ * based on HID-Test by Christian Starkjohann, Objective Development  *
+ **********************************************************************
+ * rump (Real USB Model-M PCB) is Free Software; you can redistribute *
+ * and/or modify it under the terms of the OBDEV lice,nse, as found   *
+ * in the license.txt file.                                           *
+ *                                                                    *
+ * rump is distributed in the hope that it will be useful, but        *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *
+ * OBDEV license for further details.                                 *
+ **********************************************************************/
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -77,42 +77,40 @@ const char modmask[8] PROGMEM = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80
 
 
 /* USB report descriptor (length is defined in usbconfig.h)
-   This has been changed to conform to the USB keyboard boot
-   protocol */
-char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] 
-  PROGMEM = {
-    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-    0x09, 0x06,                    // USAGE (Keyboard)
-    0xa1, 0x01,                    // COLLECTION (Application)
-    0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-    0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
-    0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)
-    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
-    0x75, 0x01,                    //   REPORT_SIZE (1)
-    0x95, 0x08,                    //   REPORT_COUNT (8)
-    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
-    0x95, 0x01,                    //   REPORT_COUNT (1)
-    0x75, 0x08,                    //   REPORT_SIZE (8)
-    0x81, 0x03,                    //   INPUT (Cnst,Var,Abs)
-    0x95, 0x05,                    //   REPORT_COUNT (5)
-    0x75, 0x01,                    //   REPORT_SIZE (1)
-    0x05, 0x08,                    //   USAGE_PAGE (LEDs)
-    0x19, 0x01,                    //   USAGE_MINIMUM (Num Lock)
-    0x29, 0x05,                    //   USAGE_MAXIMUM (Kana)
-    0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
-    0x95, 0x01,                    //   REPORT_COUNT (1)
-    0x75, 0x03,                    //   REPORT_SIZE (3)
-    0x91, 0x03,                    //   OUTPUT (Cnst,Var,Abs)
-    0x95, 0x06,                    //   REPORT_COUNT (6)
-    0x75, 0x08,                    //   REPORT_SIZE (8)
-    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-    0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
-    0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-    0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
-    0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
-    0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
-    0xc0                           // END_COLLECTION  
+   This has been changed to conform to the USB keyboard boot protocol */
+char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] PROGMEM = {
+	0x05, 0x01,            // USAGE_PAGE (Generic Desktop)
+	0x09, 0x06,            // USAGE (Keyboard)
+	0xa1, 0x01,            // COLLECTION (Application)
+	0x05, 0x07,            //   USAGE_PAGE (Keyboard)
+	0x19, 0xe0,            //   USAGE_MINIMUM (Keyboard LeftControl)
+	0x29, 0xe7,            //   USAGE_MAXIMUM (Keyboard Right GUI)
+	0x15, 0x00,            //   LOGICAL_MINIMUM (0)
+	0x25, 0x01,            //   LOGICAL_MAXIMUM (1)
+	0x75, 0x01,            //   REPORT_SIZE (1)
+	0x95, 0x08,            //   REPORT_COUNT (8)
+	0x81, 0x02,            //   INPUT (Data,Var,Abs)
+	0x95, 0x01,            //   REPORT_COUNT (1)
+	0x75, 0x08,            //   REPORT_SIZE (8)
+	0x81, 0x03,            //   INPUT (Cnst,Var,Abs)
+	0x95, 0x05,            //   REPORT_COUNT (5)
+	0x75, 0x01,            //   REPORT_SIZE (1)
+	0x05, 0x08,            //   USAGE_PAGE (LEDs)
+	0x19, 0x01,            //   USAGE_MINIMUM (Num Lock)
+	0x29, 0x05,            //   USAGE_MAXIMUM (Kana)
+	0x91, 0x02,            //   OUTPUT (Data,Var,Abs)
+	0x95, 0x01,            //   REPORT_COUNT (1)
+	0x75, 0x03,            //   REPORT_SIZE (3)
+	0x91, 0x03,            //   OUTPUT (Cnst,Var,Abs)
+	0x95, 0x06,            //   REPORT_COUNT (6)
+	0x75, 0x08,            //   REPORT_SIZE (8)
+	0x15, 0x00,            //   LOGICAL_MINIMUM (0)
+	0x25, 0x65,            //   LOGICAL_MAXIMUM (101)
+	0x05, 0x07,            //   USAGE_PAGE (Keyboard)
+	0x19, 0x00,            //   USAGE_MINIMUM (Reserved (no event indicated))
+	0x29, 0x65,            //   USAGE_MAXIMUM (Keyboard Application)
+	0x81, 0x00,            //   INPUT (Data,Ary,Abs)
+	0xc0                   // END_COLLECTION
 };
 
 /* This buffer holds the last values of the scanned keyboard matrix */
@@ -121,7 +119,7 @@ static uchar bitbuf[NUMROWS] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 /* The ReportBuffer contains the USB report sent to the PC */
 static uchar reportBuffer[8];    /* buffer for HID reports */
 static uchar idleRate;           /* in 4 ms units */
-static uchar protocolVer = 1;    /* 0 is the boot protocol, 1 is report protocol */
+static uchar protocolVer = 1;    /* 0 is boot protocol, 1 is report protocol */
 
 static void hardwareInit(void) {
 	/*
@@ -207,8 +205,8 @@ static uchar scankeys(void) {
 	modkeys = 0;
 	/* Clear report buffer */
 	memset(reportBuffer, 0, sizeof(reportBuffer));
-	/* Process all rows for key-codes */
 
+	/* Process all rows for key-codes */
 	for (row = 0; row < NUMROWS; ++row) {
 		/* Anything on this row? - if not, skip it */
 		if (0xFF == bitbuf[row]) { continue; }
@@ -219,8 +217,10 @@ static uchar scankeys(void) {
 		for (col = 0, mask = 1; col < 8; ++col, mask <<= 1) {
 			/* If no key detected, jump to the next column */
 			if (data & mask) { continue; }
+
 			/* Read keyboard map */
 			key = pgm_read_byte(&keymap[row][col]);
+
 			/* Is this a modifier key? */
 			if (key > KEY_Modifiers) {
 				reportBuffer[0] |= pgm_read_byte(&modmask[key - (KEY_Modifiers + 1)]);
@@ -228,16 +228,17 @@ static uchar scankeys(void) {
 			}
 
 			/* Too many keycodes - rollOver */
-			if (++reportIndex >= sizeof(reportBuffer)) {
-				/* Only fill buffer once */
-				if (!retval & 0x02) {
-					memset(reportBuffer + 2, KEY_errorRollOver, sizeof(reportBuffer) - 2);
-					/* continue decoding to get modifiers */
-					retval |= 2;
-				}
-			} else {
+			if (++reportIndex < sizeof(reportBuffer)) {
 				/* Set next available entry */
 				reportBuffer[reportIndex] = key;
+ 				continue;
+			}
+
+			/* Only fill buffer once */
+			if (!retval & 0x02) {
+				memset(reportBuffer + 2, KEY_errorRollOver, sizeof(reportBuffer) - 2);
+				/* continue decoding to get modifiers */
+				retval |= 2;
 			}
 		}
 	}
