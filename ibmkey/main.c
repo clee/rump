@@ -163,22 +163,26 @@ static uchar scankeys(void) {
 	for (row = 0; row < NUMROWS; ++row) {
 		// Load the scan byte mask from modmask
 		data = pgm_read_byte(&modmask[row & 7]);
-		if (row <= 7) {
-			/* Rows 0 -> 7 */
-			// Port C to weak pullups
-			DDRC  = 0x00;
-			PORTC = 0xFF;
-			// Scan on A
-			DDRA  = data;
-			PORTA = ~data;
-		} else {
-			/* Rows 8 -> 15 */
-			// Port A to weak pullups
-			DDRA  = 0x00;
-			PORTA = 0xFF;
-			// Scan on C
-			DDRC  = data;
-			PORTC = ~data;
+
+		switch(row) {
+			case 0x0:
+				// Port C to weak pullups
+				DDRC  = 0x00;
+				PORTC = 0xFF;
+			case 0x1 ... 0x7:
+				// Scan on A
+				DDRA = data;
+				PORTA = ~data;
+				break;
+			case 0x8:
+				// Port A to weak pullups
+				DDRA  = 0x00;
+				PORTA = 0xFF;
+			case 0x9 ... 0xF:
+				// Scan on C
+				DDRC = data;
+				PORTC = ~data;
+				break;
 		}
 
 		/* Used to be small loop, but the compiler optimized it away ;-) */
@@ -266,34 +270,35 @@ uchar LEDstate = 0;
 uchar usbFunctionSetup(uchar data[8]) {
 	usbRequest_t *rq = (void *)data;
 	usbMsgPtr = reportBuffer;
-/* class request type */
-	if ((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS) {
-		if (rq->bRequest == USBRQ_HID_GET_REPORT) {
-			/* wValue: ReportType (highbyte), ReportID (lowbyte) */
-			/* we only have one report type, so don't look at wValue */
-			return sizeof(reportBuffer);
-		} else if (rq->bRequest == USBRQ_HID_SET_REPORT) {
-			/* We expect one byte reports */
-			if (rq->wLength.word == 1) {
-				/* Call usbFunctionWrite with data */
-				expectReport = 1;
-				return 0xFF;
-			}  
-		} else if (rq->bRequest == USBRQ_HID_GET_IDLE) {
+
+	if ((rq->bmRequestType & USBRQ_TYPE_MASK) != USBRQ_TYPE_CLASS)
+		return 0;
+
+	switch(rq->bRequest) {
+		case USBRQ_HID_GET_IDLE:
 			usbMsgPtr = &idleRate;
 			return 1;
-		} else if (rq->bRequest == USBRQ_HID_SET_IDLE) {
+		case USBRQ_HID_SET_IDLE:
 			idleRate = rq->wValue.bytes[1];
-		} else if (rq->bRequest == USBRQ_HID_GET_PROTOCOL) {
+			return 0;
+		case USBRQ_HID_GET_REPORT:
+			return sizeof(reportBuffer);
+		case USBRQ_HID_SET_REPORT:
+			if (rq->wLength.word == 1)
+				expectReport = 1;
+			return expectReport == 1 ? 0xFF : 0;
+		case USBRQ_HID_GET_PROTOCOL:
 			if (rq->wValue.bytes[1] < 1)
 				protocolVer = rq->wValue.bytes[1];
-		} else if (rq->bRequest == USBRQ_HID_SET_PROTOCOL) {
+			return 0;
+		case USBRQ_HID_SET_PROTOCOL:
 			usbMsgPtr = &protocolVer;
 			return 1;
-		}
+		default:
+			return 0;
 	}
-	return 0;
 }
+
 
 uchar usbFunctionWrite(uchar *data, uchar len) {
 	if ((expectReport) && (len == 1)) {
