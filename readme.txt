@@ -21,6 +21,8 @@ USB HID device, specifically a keyboard. The physical appearance of the device
 is that of a normal IBM Model M keyboard, but the device works as a USB
 keyboard that can be used with any PC that does not have PS2 ports.
 
+// FIXME: Everything after this is still c64key-related. //
+
 Two different versions of the hardware can be used. One uses an
 Atmel ATmega8, whereas the other uses an Atmel ATmega16. For the 
 ATmega 16 version it is the idea to allow the extra I/O-ports to be 
