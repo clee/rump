@@ -1,28 +1,32 @@
-Spaceman Spiff's Commodire 64 USB Keyboard (c64key for short) is
-is free software; you can redistribute it and/or modify it under 
-the terms of the OBDEV license, as found in the licence.txt file.
-                                                              
-c64key is distributed in the hope that it will be useful,    
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-OBDEV license for further details.
+rump (Real USB Model-M PCB) is Free Software; you can redistribute
+and/or modify it under the terms of the OBDEV lice,nse, as found  
+in the license.txt file.                                          
+                                                                  
+rump is distributed in the hope that it will be useful, but       
+WITHOUT ANY WARRANTY; without even the implied warranty of        
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the     
+OBDEV license for further details.                                
 
 
-Spaceman Spiff's C64 USB keyboard
+Real USB Model-M PCB (rump)
 =================================
 
-This document contains various bits of information that may come in handy if
-one wants to study the function of the developed Commodore 64 USB keyboard.
+This document originally described Spaceman Spiff's Commodore 64 Keyboard;
+it has been updated to (hopefully) more accurately reflect the changes made
+to work with the IBM Model M instead. Might come in handy if you want to add
+support for a new keyboard (say a European Model M, or one of the terminal
+keyboard that had extra keys the 1391401 didn't).
 
-Spaceman Spiff's Commodore 64 USB keyboard (or c64key for short) is an 
-implementation of a low-speed USB HID device, implementing a keyboard.
-The physical appearance of the device is that of a Commodore 64 "breadbox",
-but the device works as a USB keyboard that can be used with a PC.
+Real USB Model-M PCB (or rump for short) is an implementation of a low-speed
+USB HID device, specifically a keyboard. The physical appearance of the device
+is that of a normal IBM Model M keyboard, but the device works as a USB
+keyboard that can be used with any PC that does not have PS2 ports.
 
-The C64 keyboard consists of 66 keys, where the restore-key is special in
-that it was hardwired to the NMI-pin of the 6510 in the C64. The remaining
-keys are organized in a matrix with 8 rows and 8 columns, and with the SHIFT
-LOCK key wired in parallel to the left SHIFT-key.
+The Model M most people refer to is the IBM Model M #1391401, which consists
+of 101 keys. There is nothing special about this layout, except that, when
+compared to modern keyboards, it does not have any Windows-specific keys.
+
+The keys are all organized in a matrix with 16 rows and 8 columns.
 
 
 Keyboard matrix decoding
@@ -36,23 +40,26 @@ The column inputs are also configured as inputs, and with the internal pull-
 up resistors enabled. Each column is read in turn and compared to the last 
 values (which are stored in a buffer). When a change is detected, a debounce 
 counter is activated, which will require a number of consecutive reads to all
-return the same value before a report is generated. This is required since 
-the keys in the C64 keyboard matrix have a rather high amount of bounce, which
-will sometimes result in more than one key-event for some key presses.
+return the same value before a report is generated. (This debouncing algorithm
+does not appear to have any detrimental effect on the Model M, even though I
+personally have found the Model M to contain very little bounce.)
 
-The scanning rate with the current configuration is about 2.2kHz, which is fast
-enough that the delay caused by the debouncing is not noticable.
+I'm not sure if Spiff's scanning rate calculations of 2.2kHz are still accurate.
+The debouncing is certainly not noticeable, with whatever the current scanning
+rate is.
 
-The keyboard matrix hardware of the C64 is quite simple, and the scanning 
-routine is also simple, so no key blocking has been implemented. This means 
-that ghosting can easily occur (if 3 keys are depressed at the same time,
-a fourth scan-code may be generated, whose key was never pressed).
+The keyboard matrix hardware of the Model M (much like the C64) is quite simple,
+and the scanning routine is also simple, so no key blocking has been implemented.
+This means that ghosting can easily occur (if 3 keys are depressed at the same
+time, a fourth scan-code may be generated, whose key was never pressed).
 
 
 USB Keyboard limitations
 ------------------------
 
-The USB HID keyboard specification has some limitations that became aparent
+(This information has been preserved from the original c64key doc.txt).
+
+The USB HID keyboard specification has some limitations that became apparent
 during the work with this project. Most notably, the limit on a HID report
 is 8 bytes (due to the low-speed devices). Since the first byte is reserved 
 for modifier keys, and on a normal keyboard, the second byte is reserved, we 
@@ -67,141 +74,44 @@ pressed and released, other limitations apply here, such as the keyboard
 controller scanning the keys, and the decoding on the PC side. It is therefore
 not clear if PS/2 keyboards are better in this respect, but the USB HID
 specification imposes a limit that does not exist with PS/2, so it is at least
-theoretically possible to make a PS/2 keyboard that can handle more simulteneous
+theoretically possible to make a PS/2 keyboard that can handle more simultaneous
 keypresses.
-
-Since the scanning of the keyboard in our implementation (the c64key) is very
-simple, and does not cope with ghosting, we do not regard this as a big 
-disadvantage for our application, but it should be considered if a different
-type of controller may be more appropriate for a given application.
-
-That said, it is anticipated that the c64key can prove useful in many cases
-where a more advanced input device is needed (compared to the HIDkeys demo
-application on which this is based). Changes to the method of scanning should
-be easily achievable.
 
 
 Special key handling
 --------------------
 
-In order to get the most accurate emulation of the C64 keyboard when used with
-a PC, some special key handling has been implemented. The idea is to achieve
-the correct symbol (e.g. the one on the keytop) to appear on the screen, even
-though the mapping to PC scan-codes in unshifted and shifted states is not
-straight forward. 
-
-Unfortunately the USB keyboard does not send the character code, but rather a
-scan-code, similar to older keyboards, and the PC maps these to characters
-(or functions) based on the current keyboard map.
-
-In order to implement this, the keyboard map array has some special entries
-(starting with SPC_) which are handled by a special lookup table. The table
-contains the scan-code to generate, as well as some bits signifying if the
-modifier keys should be altered. 
-
-Unfortunately this approach means the modifier keys may be messed up if a 
-special key is pressed in combination with another key. In other words the
-system works fine as long as only one key is pressed at a time (perhaps 
-along with a modifyer).
+Spiff wrote some code to handle "special" keys on the C64 keyboard which we
+turned out not to need at all. So it's gone now. If you want to find out more,
+please check out c64key!
 
 
-Modifier key mapping
---------------------
+Model M keyboard matrix
+-----------------------
 
-Due to the difference in available modifier keys on a Commodore 64 and a
-standard PC keyboard, the following mapping has been defined. The modifier
-keys are decoded along with the other keys, and their mapping may be changed
-in the keymap-array defined in keycodes.h. Notice, however, that some special
-decoding of the shift-keys is done in main.c, in order to handle the special
-keys that need to generate different scan-codes based on the state of the
-modifiers, or change the modifier mask.
-
-Modifier key mappings:
-LSHIFT              Left shift
-SHIFT LOCK          Left shift
-CTRL                Left CTRL
-C=                  Left ALT
-RUN/STOP            Right ALT
-RSHIFT              Right shift
-RESTORE             Right CTRL
-
-For the cursor keys and the F-keys, the right shift-key will select alternate
-function, while the left shift-key is passed through. This allows selection by
-holding the left shift key and using the cursor-keys (and the right-shift to
-alter the direction of movement). It also allows the even F-keys to be selected
-(by using RSHIFT + F-key), while the left shift key is passed through. So pressing
-RSHIFT+F7 yields F8, and LSHIFT+RSHIFT+F7 yields SHIFT+F8. C= + RSHIFT + F3 is
-Alt-F4.
+The table below contains the mapping of the 1391401 keyboard matrix. The table
+has been organized based on the row/column numbers used internally in the 
+Model M (and also in the rump project), and should correspond to the wiring used
+in the original Model M keyboard matrix connectors.
 
 
-C64 keyboard matrix pinout
---------------------------
-
-pin   wire color        function
- 20   brown/white       column 7
- 19   red/white         column 1
- 18   orange/white      column 2
- 17   yellow/white      column 3
- 16   green/white       column 4
- 15   blue/white        column 5
- 14   purple/white      column 6
- 13   gray/white        column 0
- 12   brown             row 0
- 11   red               row 1
- 10   orange            row 2
-  9   yellow            row 7
-  8   green             row 4
-  7   blue              row 5
-  6   purple            row 6
-  5   gray              row 3
-  4                     +5V
-  3   black             restore
-  2                     (key)
-  1   white             GND
-
-NOTE: The GND-connection is only used for the RESTORE-key. The remaining 65 keys
-are mapped into the 8x8 matrix (with the SHIFT LOCK key connected in parallel with
-the left SHIFT key).
+	   J3.1     J3.2     J3.3     J3.4     J3.5     J3.6     J3.7     J3.8
+J4.1    NC       NC      L-Ctrl    NC       NC       NC      R-Ctrl    NC
+J4.2    NC     L-Shift    NC       NC       NC       NC     R-Shift    NC
+J4.3   Esc      Tab       ~`       1        Q        A        Z        NC
+J4.4    NC      Caps      F1       2        W        S        X        NC
+J4.5    F4       F3       F2       3        E        D        C        NC
+J4.6    G        T        5        4        R        F        V        B
+J4.7    F5    Backspace   F9      F10       NC       \|     Enter    Space
+J4.8    H        Y        6        7        U        J        M        N
+J4.9    F6       }]       +=       8        I        K        ,<       NC
+J4.10   NC       F7       F8       9        O        L        .>       NC
+J4.11   '"       {[       -_       0        P        ;        NC       /?
+J4.12   NC       N4      Del      F11       N7       N1    Numlock    Down
+J4.13   N0       N5      Ins      F12       N8       N2       N/     Right
+J4.14   N.       N6      PGUP     PGDN      N9       N3       N*       N-
+J4.15   UP       NC      Home     End       N+    N Enter    Pause    Left
+J4.16  L-Alt     NC	      NC    PrtScrn   ScrlLck    NC       NC     R-Alt
 
 
-C64 keyboard matrix
--------------------
-
-The table below contains the mapping of the C64 keyboard matrix. The table has
-been organized based on the row/column numbers used internally in the C64 (and
-also in the c64key project), but does not correspond to the wiring used in the
-C64 keyboard matrix connector.
-
-row/col         0       1       2       3       4       5       6       7
-   0          NS/DEL    3       5       7       9       +       £       1
-   1          RETURN    W       R       Y       I       P       *       <-
-   2         CRSR RL    A       D       G       J       L       ;      CTRL
-   3            F7      4       6       8       0       -    CLR/HOME   2
-   4            F1      Z       C       B       M       .    R shift   SPC
-   5            F3      S       F       H       K       :       =       C=
-   6            F5      E       T       U       O       @       ^       Q
-   7         CRSR DU  L shift   X       V       N       ,       /    RUN/STOP
-
-
-The Danish keyboard mapping
----------------------------
-
-The Danish keyboard mapping is created to utilize the C64 USB keyboard with 
-Danish keytops for a PC with a Danish keyboard configuration. It should be possible
-to make an updated keycodes.h-file with other key-to-scancode translation, which
-will allow an unmodified C64 keyboard to be used, or allow the generated scan-codes
-to be in a format suitable for other keyboard mappings on the PC side.
-
-The following C64 keys have replaced keytops on the Danish version:
-Normal C64 key        unshifted        shifted
-      0                   0               @
-      -                   -               =
-      £                   :               :
-      @                   å               Å
-      :                   æ               Æ
-      ;                   ø               Ø
-      =                   ;               ;
-      
-
-Copyright (C) 2007 by Mikkel Holm Olsen
-$Id: $
+Copyright (C) 2008 by Chris Lee <clee@mg8.org>

@@ -1,29 +1,25 @@
-Spaceman Spiff's Commodire 64 USB Keyboard (c64key for short) is
-is free software; you can redistribute it and/or modify it under 
-the terms of the OBDEV license, as found in the licence.txt file.
+rump (Real USB Model-M PCB) is Free Software; you can redistribute
+and/or modify it under the terms of the OBDEV lice,nse, as found  
+in the license.txt file.                                          
+                                                                  
+rump is distributed in the hope that it will be useful, but       
+WITHOUT ANY WARRANTY; without even the implied warranty of        
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the     
+OBDEV license for further details.                                
                                                               
-c64key is distributed in the hope that it will be useful,    
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-OBDEV license for further details.
-                                                              
 
-This is the README file for Spaceman Spiff's Commodore 64 USB Keyboard.
+This is the README file for Real USB Model-M PCB (which might be a little
+bit of a misnomer since, technically, devices running this code won't ever
+pass the real USB certification test suite).
 
-Spaceman Spiff's Commodore 64 USB Keyboard (c64key for short) is a
-USB HID Keyboard device built into an old Commodore 64 "breadbox", 
-allowing the (rather crappy but highly nostalgic) keyboard of a C64
-to be used as an input device for e.g. a PC. Of course this allows
-the keyboard to be used in conjunction with a C64 emulator to get
-the right nostalgic feel, but this use has not been tested, and the
-conversion of scan-codes may result in less optimal results in this 
-case.
+This document originally described Spaceman Spiff's Commodore 64 Keyboard;
+it has been updated to (hopefully) more accurately reflect the changes made
+to work with the IBM Model M instead.
 
-The basis of the project was Objective Development's HIDkeys demo
-application, although a great deal of modifications had to be made
-in order to scan a proper keyboard matrix, as well as report more 
-than one keypress at a time. This also meant the HID report format
-had to be altered.
+Real USB Model-M PCB (or rump for short) is an implementation of a low-speed
+USB HID device, specifically a keyboard. The physical appearance of the device
+is that of a normal IBM Model M keyboard, but the device works as a USB
+keyboard that can be used with any PC that does not have PS2 ports.
 
 Two different versions of the hardware can be used. One uses an
 Atmel ATmega8, whereas the other uses an Atmel ATmega16. For the 

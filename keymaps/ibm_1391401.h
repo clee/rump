@@ -1,15 +1,20 @@
 /*********************************************************************
  * ibm_1391401.h - Keymap for US IBM 1391401 keyboard layout         *
  *********************************************************************
- * Spaceman Spiff's Commodire 64 USB Keyboard (c64key for short) is  *
- * is free software; you can redistribute it and/or modify it under  *
- * the terms of the OBDEV license, as found in the licence.txt file. *
- *                                                                   *
- * c64key is distributed in the hope that it will be useful,         *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of    *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the     *
- * OBDEV license for further details.                                *
+ * rump is copyright (C) 2008 Chris Lee <clee@mg8.org>                *
+ * based on c64key, copyright (C) 2006-2007 Mikkel Holm Olsen         *
+ * based on HID-Test by Christian Starkjohann, Objective Development  *
+ **********************************************************************
+ * rump (Real USB Model-M PCB) is Free Software; you can redistribute *
+ * and/or modify it under the terms of the OBDEV lice,nse, as found   *
+ * in the license.txt file.                                           *
+ *                                                                    *
+ * rump is distributed in the hope that it will be useful, but        *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the      *
+ * OBDEV license for further details.                                 *
  *********************************************************************/
+
 #ifndef KEYMAP_H
 #define KEYMAP_H
 #include <avr/pgmspace.h>
