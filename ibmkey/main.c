@@ -73,7 +73,7 @@
 
 /* Originally used as a mask for the modifier bits, but now also
    used for other x -> 2^x conversions (lookup table). */
-const char modmask[8] PROGMEM = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
+const char modmask[8] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
 
 
 /* USB report descriptor (length is defined in usbconfig.h)
@@ -172,7 +172,7 @@ static uchar scankeys(void) {
 	/* Scan all rows */
 	for (row = 0; row < NUMROWS; ++row) {
 		// Load the scan byte mask from modmask
-		data = pgm_read_byte(&modmask[row & 7]);
+		data = modmask[row & 7];
 
 		switch(row) {
 			case 0x0:
@@ -238,15 +238,15 @@ static uchar scankeys(void) {
 
 			/* Is this a modifier key? */
 			if (key > KEY_Modifiers) {
-				reportBuffer[0] |= pgm_read_byte(&modmask[key - (KEY_Modifiers + 1)]);
+				reportBuffer[0] |= modmask[key - (KEY_Modifiers + 1)];
 				continue;
 			}
 
 			/* Too many keycodes - rollOver */
 			if (++reportIndex < sizeof(reportBuffer)) {
 				/* Set next available entry */
-				activeRows |= pgm_read_byte(&modmask[row]);
-				activeColumns |= pgm_read_byte(&modmask[col]);
+				activeRows |= modmask[row];
+				activeColumns |= modmask[col];
 				reportBuffer[reportIndex] = key;
  				continue;
 			}
@@ -273,11 +273,16 @@ static uchar scankeys(void) {
 
 	/* Ghost-key detection... not working yet. */
 	if (reportBuffer[5] ^ 0x00) {
-		int numRows, numCols;
+		unsigned int numRows, numCols, keysChanged = 0, keysDown = 0, i;
 		for (numRows = 0; activeRows; numRows++) { activeRows &= (activeRows - 1); }
 		for (numCols = 0; activeColumns; numCols++) { activeColumns &= (activeColumns - 1); }
+		for (i = 2; i < 8; i++) {
+			if (reportBuffer[i] ^ 0x00) { keysDown++; }
+			if (reportCache[i] ^ reportBuffer[i]) { keysChanged++; }
+		}
 
-		if (numRows + numCols < (numKeysDown + 2)) {
+		if (((numRows + numCols) < (keysDown + 2)) && (keysChanged > 1)) {
+			// This should imply that a ghost key event has been received...
 			setLED(1);
 		}
 	} else {
