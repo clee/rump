@@ -118,6 +118,7 @@ static uchar bitbuf[NUMROWS] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 
 /* The ReportBuffer contains the USB report sent to the PC */
 static uchar reportBuffer[8];    /* buffer for HID reports */
+static uchar reportCache[8];
 static uchar idleRate;           /* in 4 ms units */
 static uchar protocolVer = 1;    /* 0 is boot protocol, 1 is report protocol */
 
@@ -138,15 +139,23 @@ static void hardwareInit(void) {
 	PORTC = 0xFF;   /* activate all pull-ups */
 	DDRC  = 0x00;   /* all pins input */
 
-	PORTD = 0x00;   /* 0000 0000 bin: leave PORTD alone */
-	DDRD  = 0x05;   /* 0000 0101 bin: these pins are for USB output */
+	PORTD = 0x40;   /* 0100 0000 bin: LED on PD6 */
+	DDRD  = 0x45;   /* 0100 0101 bin: these pins are for USB output */
 
 	/* USB Reset by device only required on Watchdog Reset */
 	_delay_us(11);   /* delay >10ms for USB reset */ 
 
-	DDRD = 0x02;    /* 0000 0010 bin: remove USB reset condition */
+	DDRD = 0x40;    /* 0100 0000 bin: remove USB reset condition */
 	/* configure timer 0 for a rate of 12M/(1024 * 256) = 45.78 Hz (~22ms) */
 	TCCR0 = 5;      /* timer 0 prescaler: 1024 */
+}
+
+static void setLED(int on) {
+	if (on) {
+		PORTD &= ~0x40;
+	} else {
+		PORTD |= 0x40;
+	}
 }
 
 /* This function scans the entire keyboard, debounces the keys, and
@@ -156,6 +165,7 @@ static uchar scankeys(void) {
 	uchar reportIndex = 1; /* First available report entry is 2 */
 	uchar retval = 0;
 	uchar row, data, key, modkeys;
+	unsigned int activeRows, activeColumns;
 	volatile uchar col, mask;
 	static uchar debounce = 5;
 
@@ -186,7 +196,7 @@ static uchar scankeys(void) {
 		}
 
 		/* Used to be small loop, but the compiler optimized it away ;-) */
-		_delay_us(30);
+		_delay_us(16);
 
 		// Read column output on B.
 		data = PINB;
@@ -209,6 +219,7 @@ static uchar scankeys(void) {
 	modkeys = 0;
 	/* Clear report buffer */
 	memset(reportBuffer, 0, sizeof(reportBuffer));
+	activeRows = activeColumns = 0;
 
 	/* Process all rows for key-codes */
 	for (row = 0; row < NUMROWS; ++row) {
@@ -234,6 +245,8 @@ static uchar scankeys(void) {
 			/* Too many keycodes - rollOver */
 			if (++reportIndex < sizeof(reportBuffer)) {
 				/* Set next available entry */
+				activeRows |= pgm_read_byte(&modmask[row]);
+				activeColumns |= pgm_read_byte(&modmask[col]);
 				reportBuffer[reportIndex] = key;
  				continue;
 			}
@@ -257,6 +270,21 @@ static uchar scankeys(void) {
 
 	/* Set other modifiers */
 	reportBuffer[0] |= modkeys & 0x77;
+
+	/* Ghost-key detection... not working yet. */
+	if (reportBuffer[5] ^ 0x00) {
+		int numRows, numCols;
+		for (numRows = 0; activeRows; numRows++) { activeRows &= (activeRows - 1); }
+		for (numCols = 0; activeColumns; numCols++) { activeColumns &= (activeColumns - 1); }
+
+		if (numRows + numCols < (numKeysDown + 2)) {
+			setLED(1);
+		}
+	} else {
+		setLED(0);
+	}
+
+	memcpy(reportCache, reportBuffer, sizeof(reportBuffer));
 
 	/* Must have been a change at some point, since debounce is done */
 	retval |= 1;
@@ -305,15 +333,13 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 		/* Get the state of all 5 LEDs */
 		LEDstate = data[0];
 		/* Check state of CAPS lock LED */
-/* New idea: Let's not mess with PORTD.
-		if (LEDstate & LED_CAPS) {
-			PORTD |= 0x02;
+/*
+		if (LEDstate & LED_NUM) {
+			PORTD |= 0x40;
 		} else {
-			PORTD &= ~0x02;
+			PORTD &= ~0x40;
 		}
-*/
-		expectReport = 0;
-		return 0x01;
+ */
 	}
 	expectReport = 0;
 	return 0x01;
@@ -322,6 +348,8 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 int main(void) {
 	uchar updateNeeded = 0;
 	uchar idleCounter = 0;
+	
+	memset(reportCache, 0, sizeof(reportCache));
 
 	wdt_enable(WDTO_2S); /* Enable watchdog timer 2s */
 	hardwareInit(); /* Initialize hardware (I/O) */
