@@ -133,11 +133,11 @@ static void hardwareInit(void) {
 	PORTA = 0xFF;   /* Port A = J4 pins 1-8 - enable pull-up */
 	DDRA  = 0x00;   /* Port A is input */
 
-	PORTB = 0xFF;   /* Port B are row drivers - enable pull-up */
+	PORTB = 0xFF;   /* Port B = J3 pins 1-8 - enable pull-up */
 	DDRB  = 0x00;   /* Port B is input */
 
-	PORTC = 0xFF;   /* activate all pull-ups */
-	DDRC  = 0x00;   /* all pins input */
+	PORTC = 0xFF;   /* Port C = J4 pins 9-16 - enable pull-up */
+	DDRC  = 0x00;   /* Port C is input */
 
 	PORTD = 0x40;   /* 0100 0000 bin: LED on PD6 */
 	DDRD  = 0x45;   /* 0100 0101 bin: these pins are for USB output */
@@ -174,7 +174,7 @@ static uchar scankeys(void) {
 		// Load the scan byte mask from modmask
 		data = modmask[row & 7];
 
-		switch(row) {
+		switch (row) {
 			case 0x0:
 				// Port C to weak pullups
 				DDRC  = 0x00;
@@ -196,7 +196,7 @@ static uchar scankeys(void) {
 		}
 
 		/* Used to be small loop, but the compiler optimized it away ;-) */
-		_delay_us(16);
+		_delay_us(30);
 
 		// Read column output on B.
 		data = PINB;
@@ -307,7 +307,7 @@ uchar usbFunctionSetup(uchar data[8]) {
 	if ((rq->bmRequestType & USBRQ_TYPE_MASK) != USBRQ_TYPE_CLASS)
 		return 0;
 
-	switch(rq->bRequest) {
+	switch (rq->bRequest) {
 		case USBRQ_HID_GET_IDLE:
 			usbMsgPtr = &idleRate;
 			return 1;
