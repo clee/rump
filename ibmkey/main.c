@@ -73,7 +73,10 @@
 
 /* Originally used as a mask for the modifier bits, but now also
    used for other x -> 2^x conversions (lookup table). */
-const char modmask[8] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
+const unsigned short int modmask[16] = {
+	0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080,
+	0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000
+};
 
 
 /* USB report descriptor (length is defined in usbconfig.h)
@@ -114,7 +117,10 @@ char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] PROGMEM = {
 };
 
 /* This buffer holds the last values of the scanned keyboard matrix */
-static uchar bitbuf[NUMROWS] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+static uchar bitbuf[NUMROWS] = {
+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+};
 
 /* The ReportBuffer contains the USB report sent to the PC */
 static uchar reportBuffer[8];    /* buffer for HID reports */
@@ -162,10 +168,10 @@ static void setLED(int on) {
    if a key change has been found, a new report is generated, and the
    function returns true to signal the transfer of the report. */
 static uchar scankeys(void) {   
+	unsigned short int activeRows, activeCols;
 	uchar reportIndex = 1; /* First available report entry is 2 */
 	uchar retval = 0;
-	uchar row, data, key, modkeys;
-	unsigned int activeRows, activeColumns;
+	uchar row, data, key, modkeys, keysChanged;
 	volatile uchar col, mask;
 	static uchar debounce = 5;
 
@@ -216,10 +222,9 @@ static uchar scankeys(void) {
 		return retval;
 	}
 
-	modkeys = 0;
+	modkeys = activeRows = activeCols = keysChanged = 0;
 	/* Clear report buffer */
 	memset(reportBuffer, 0, sizeof(reportBuffer));
-	activeRows = activeColumns = 0;
 
 	/* Process all rows for key-codes */
 	for (row = 0; row < NUMROWS; ++row) {
@@ -235,6 +240,8 @@ static uchar scankeys(void) {
 
 			/* Read keyboard map */
 			key = pgm_read_byte(&keymap[row][col]);
+			activeRows |= modmask[row];
+			activeCols |= modmask[col];
 
 			/* Is this a modifier key? */
 			if (key > KEY_Modifiers) {
@@ -245,8 +252,6 @@ static uchar scankeys(void) {
 			/* Too many keycodes - rollOver */
 			if (++reportIndex < sizeof(reportBuffer)) {
 				/* Set next available entry */
-				activeRows |= modmask[row];
-				activeColumns |= modmask[col];
 				reportBuffer[reportIndex] = key;
  				continue;
 			}
@@ -271,29 +276,37 @@ static uchar scankeys(void) {
 	/* Set other modifiers */
 	reportBuffer[0] |= modkeys & 0x77;
 
-	/* Ghost-key detection... not working yet. */
-	if (reportBuffer[5] ^ 0x00) {
-		unsigned int numRows, numCols, keysChanged = 0, keysDown = 0, i;
-		for (numRows = 0; activeRows; numRows++) { activeRows &= (activeRows - 1); }
-		for (numCols = 0; activeColumns; numCols++) { activeColumns &= (activeColumns - 1); }
-		for (i = 2; i < 8; i++) {
-			if (reportBuffer[i] ^ 0x00) { keysDown++; }
-			if (reportCache[i] ^ reportBuffer[i]) { keysChanged++; }
+	for (unsigned int i = 2; i < 8; i++) {
+		if (reportCache[i] ^ reportBuffer[i]) {
+			keysChanged++;
 		}
-
-		if (((numRows + numCols) < (keysDown + 2)) && (keysChanged > 1)) {
-			// This should imply that a ghost key event has been received...
-			setLED(1);
-		}
-	} else {
-		setLED(0);
 	}
 
+	/* Ghost-key prevention, seems to actually work! */
+	if (reportBuffer[5] ^ 0x00 && keysChanged > 1) {
+		uchar numRows, numCols;
+
+		for (numRows = 0; activeRows; numRows++) {
+			activeRows &= (activeRows - 1);
+		}
+
+		for (numCols = 0; activeCols; numCols++) {
+			activeCols &= (activeCols - 1);
+		}
+
+		if ((numRows + numCols) < reportIndex) {
+			// This should imply that a ghost key event has happened, so
+			// drop the current report and repeat the last one instead
+			memcpy(reportBuffer, reportCache, sizeof(reportBuffer));
+			retval |= 1;
+			return retval;
+		}
+	}
+	
 	memcpy(reportCache, reportBuffer, sizeof(reportBuffer));
 
 	/* Must have been a change at some point, since debounce is done */
 	retval |= 1;
-
 	return retval;
 }
 
