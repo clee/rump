@@ -54,30 +54,6 @@ This means that ghosting can easily occur (if 3 keys are depressed at the same
 time, a fourth scan-code may be generated, whose key was never pressed).
 
 
-USB Keyboard limitations
-------------------------
-
-(This information has been preserved from the original c64key doc.txt).
-
-The USB HID keyboard specification has some limitations that became apparent
-during the work with this project. Most notably, the limit on a HID report
-is 8 bytes (due to the low-speed devices). Since the first byte is reserved 
-for modifier keys, and on a normal keyboard, the second byte is reserved, we 
-are left with a maximum of 6 bytes for the keycodes. In our case we do not 
-need LED states, and so this byte is saved for another keycode. In other words 
-it is not possible to create a USB HID keyboard that handles pressing more 
-than 7 keys simultaneously (6 under normal circumstances) - apart from the up 
-to 8 modifier keys. Clearly the keyboard is primarily meant as an input-device
-for typing text, and not as a game controller. While the AT and PS/2 keyboard
-protocol does not have this limitation, since it sends scancodes for each key
-pressed and released, other limitations apply here, such as the keyboard 
-controller scanning the keys, and the decoding on the PC side. It is therefore
-not clear if PS/2 keyboards are better in this respect, but the USB HID
-specification imposes a limit that does not exist with PS/2, so it is at least
-theoretically possible to make a PS/2 keyboard that can handle more simultaneous
-keypresses.
-
-
 Special key handling
 --------------------
 
@@ -95,10 +71,10 @@ Model M (and also in the rump project), and should correspond to the wiring used
 in the original Model M keyboard matrix connectors.
 
 
-	   J3.1     J3.2     J3.3     J3.4     J3.5     J3.6     J3.7     J3.8
+       J3.1     J3.2     J3.3     J3.4     J3.5     J3.6     J3.7     J3.8
 J4.1    NC       NC      L-Ctrl    NC       NC       NC      R-Ctrl    NC
 J4.2    NC     L-Shift    NC       NC       NC       NC     R-Shift    NC
-J4.3   Esc      Tab       ~`       1        Q        A        Z        NC
+J4.3   Esc      Tab       `~       1        Q        A        Z        NC
 J4.4    NC      Caps      F1       2        W        S        X        NC
 J4.5    F4       F3       F2       3        E        D        C        NC
 J4.6    G        T        5        4        R        F        V        B
@@ -111,7 +87,7 @@ J4.12   NC       N4      Del      F11       N7       N1    Numlock    Down
 J4.13   N0       N5      Ins      F12       N8       N2       N/     Right
 J4.14   N.       N6      PGUP     PGDN      N9       N3       N*       N-
 J4.15   UP       NC      Home     End       N+    N Enter    Pause    Left
-J4.16  L-Alt     NC	      NC    PrtScrn   ScrlLck    NC       NC     R-Alt
+J4.16  L-Alt     NC       NC    PrtScrn   ScrlLck    NC       NC     R-Alt
 
 
 Copyright (C) 2008 by Chris Lee <clee@mg8.org>

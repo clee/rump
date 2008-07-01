@@ -108,7 +108,7 @@ the newest features and options.
 
 /* We cannot use Obdev's free shared VID/PID pair because this is a HID.
  * Mikkel Holm Olsen (aka Spaceman Spiff) told me to use this VID/PID pair,
- * which he registered for his SpiffChorders.
+ * which he registered for his "SpiffChorder" project.
  *
  * FIXME: At some point, get our own VID/PID pair somehow.
  */

@@ -1,4 +1,4 @@
-Spaceman Spiff's C64 keyboard is based on the HIDkeys application of
+rump is based on c64key which is based on the HIDkeys application of
 Objective Development Software GmbH, and their distributed AVR-USB
 firmware only driver. The directory usbdrv contains the driver and
 available license etc. in unmodified form. The license for the USB
@@ -15,7 +15,7 @@ similar fashion.
 
 The OBDEV license is listed below.
 
-PREFACE
+PREFACE
 
 Conceiving and understanding a new license is not an easy task. To make things
 easier for both, the author and the licensee, we have decided to base our

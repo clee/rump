@@ -1,8 +1,8 @@
 Changelog for RUMP (Real USB Model-M PCB) (rump)
 
-1.00 - $DATE
-------------
+1.00 - July 1, 2008
+-------------------
 - Initial public release based on c64key
+- Ghost key prevention
 - Works on ATmega16 and ATmega32 (no ATmega8; it lacks GPIO pins)
-- Still using ancient AVRUSB stack - need to upgrade
-- Boot protocol compatible.
+- Boot protocol compatible
